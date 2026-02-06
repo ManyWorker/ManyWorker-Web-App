@@ -1,1 +1,6 @@
-<p>auth works!</p>
+<div style="padding: 20px;">
+  <h2>Login</h2>
+  <input [(ngModel)]="user.username" placeholder="Usuario">
+  <input [(ngModel)]="user.password" type="password" placeholder="Contraseña">
+  <button (click)="onLogin()">Entrar</button>
+</div>
