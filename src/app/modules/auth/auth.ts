@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ActorLogin } from '../../models/actor-login';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -12,12 +13,15 @@ import { ActorLogin } from '../../models/actor-login';
 export class AuthComponent {
   user: ActorLogin = { username: '', password: '' };
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin() {
+  login() {
     this.authService.login(this.user).subscribe({
-      next: (res) => alert('Login exitoso: ' + res.username),
-      error: (err) => alert('Error de acceso')
+      next: (res) => {
+        alert('Bienvenido ' + res.username);
+        this.router.navigate(['/']); // Redirigir al inicio tras el éxito
+      },
+      error: () => alert('Error de autenticación')
     });
   }
 }
