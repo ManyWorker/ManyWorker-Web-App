@@ -6,6 +6,7 @@ import { AuthComponent } from './modules/auth/auth';
 //import { ClienteComponent } from './modules/cliente/cliente';
 //import { TrabajadorComponent } from './modules/trabajador/trabajador';
 //import { MensajesComponent } from './modules/mensajes/mensajes';
+import { CategoriaListComponent } from '../components/categoria_list.component';
 
 // Importamos los guards de seguridad
 import { authGuard } from './guards/auth.guard';
@@ -52,5 +53,8 @@ export const routes: Routes = [
     },
 
     // Ruta comodín: Si ponen una URL rara, volver al login
-    { path: '**', redirectTo: '/login' }
+    { path: '**', redirectTo: '/login' },
+    
+    { path: 'categorias', component: CategoriaListComponent },
+    { path: '', redirectTo: '/categorias', pathMatch: 'full' }
 ];

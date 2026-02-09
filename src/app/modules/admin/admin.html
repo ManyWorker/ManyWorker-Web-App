@@ -1,10 +1,39 @@
-<table>
-  <tr *ngFor="let cat of categorias">
-    <td>{{ cat.nombre }}</td>
-    <td>
-      <button (click)="borrarCategoria(cat.id)" style="color: red;">
-        Eliminar
-      </button>
-    </td>
-  </tr>
-</table>
+<div class="container mt-4">
+  <h2>Listado de Categorías</h2>
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Leyes Aplicables</th>
+        <th>¿Es Reparación?</th>
+        <th>Tareas Relacionadas</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cat of categorias">
+        <td>{{ cat.id }}</td>
+        <td>{{ cat.titulo }}</td>
+        <td>{{ cat.leyesAplicables }}</td>
+        
+        <td>
+          <span [class]="cat.esReparacion ? 'text-success' : 'text-danger'">
+            {{ cat.esReparacion ? 'Sí' : 'No' }}
+          </span>
+        </td>
+        
+        <td>
+          <small *ngFor="let tarea of cat.tareas">
+            • {{ tarea.titulo }}<br>
+          </small>
+          <span *ngIf="cat.tareas.length === 0" class="text-muted">Sin tareas</span>
+        </td>
+        
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="eliminar(cat.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
