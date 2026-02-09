@@ -7,6 +7,7 @@ import { AuthComponent } from './modules/auth/auth';
 //import { TrabajadorComponent } from './modules/trabajador/trabajador';
 //import { MensajesComponent } from './modules/mensajes/mensajes';
 import { CategoriaListComponent } from '../components/categoria_list.component';
+import { TutorialComponent } from './modules/tutorial/tutorial';
 
 // Importamos los guards de seguridad
 import { authGuard } from './guards/auth.guard';
@@ -15,6 +16,8 @@ import { roleGuard } from './guards/role.guard';
 export const routes: Routes = [
     // Ruta pública: Login
     { path: 'login', component: AuthComponent },
+
+    { path: 'tutorial', component: TutorialComponent },
     
     // Ruta por defecto: Redirigir al login si está vacía
     { path: '', redirectTo: '/login', pathMatch: 'full' },

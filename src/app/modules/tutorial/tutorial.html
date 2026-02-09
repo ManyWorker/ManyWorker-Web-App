@@ -1,0 +1,18 @@
+<div class="tutorial-container">
+  <h1>Centro de Aprendizaje</h1>
+  <p>Consulta nuestros tutoriales para sacar el máximo partido a ManyWorker.</p>
+
+  <div class="tutorial-grid">
+    <div class="tutorial-card" *ngFor="let t of tutoriales">
+      <div class="card-header">
+        <h3>{{ t.titulo }}</h3>
+      </div>
+      <div class="card-body">
+        <p>{{ t.cuerpo }}</p>
+      </div>
+      <div class="card-footer">
+        <button class="btn-read">Leer más</button>
+      </div>
+    </div>
+  </div>
+</div>
