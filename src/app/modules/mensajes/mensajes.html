@@ -1,1 +1,116 @@
-<p>mensajes works!</p>
+<div class="container py-5">
+  
+  <h2 class="mb-4 text-primary"><i class="bi bi-envelope"></i> Mensajería</h2>
+
+  <div *ngIf="successMsg" class="alert alert-success alert-dismissible fade show">
+    {{ successMsg }}
+    <button type="button" class="btn-close" (click)="successMsg=''"></button>
+  </div>
+  <div *ngIf="errorMsg" class="alert alert-danger alert-dismissible fade show">
+    {{ errorMsg }}
+    <button type="button" class="btn-close" (click)="errorMsg=''"></button>
+  </div>
+
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <button class="nav-link" [class.active]="activeTab === 'inbox'" (click)="switchTab('inbox')">
+        <i class="bi bi-inbox-fill"></i> Recibidos
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [class.active]="activeTab === 'sent'" (click)="switchTab('sent')">
+        <i class="bi bi-send-fill"></i> Enviados
+      </button>
+    </li>
+    <li class="nav-item ms-auto">
+      <button class="btn btn-primary" [class.active]="activeTab === 'compose'" (click)="switchTab('compose')">
+        <i class="bi bi-pencil-square"></i> Redactar
+      </button>
+    </li>
+  </ul>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'inbox'">
+    <div *ngIf="inboxMessages.length === 0" class="text-center py-5 text-muted">
+      <i class="bi bi-mailbox" style="font-size: 3rem;"></i>
+      <p>No tienes mensajes recibidos.</p>
+    </div>
+
+    <div class="list-group">
+      <div *ngFor="let msg of inboxMessages" class="list-group-item list-group-item-action p-4 mb-2 border rounded shadow-sm">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1 fw-bold text-primary">{{ msg.asunto }}</h5>
+          <small class="text-muted">{{ msg.fechaEnvio | date:'medium' }}</small>
+        </div>
+        <p class="mb-1 text-muted">De: <strong>{{ msg.remitente.username }}</strong></p>
+        <p class="mb-3 mt-2">{{ msg.cuerpo }}</p>
+        <div class="text-end">
+          <button class="btn btn-sm btn-outline-danger" (click)="onDelete(msg.id)">
+             <i class="bi bi-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'sent'">
+    <div *ngIf="sentMessages.length === 0" class="text-center py-5 text-muted">
+      <i class="bi bi-send-x" style="font-size: 3rem;"></i>
+      <p>No has enviado mensajes aún.</p>
+    </div>
+
+    <div class="list-group">
+      <div *ngFor="let msg of sentMessages" class="list-group-item p-4 mb-2 border rounded bg-light">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1 fw-bold">{{ msg.asunto }}</h5>
+          <small class="text-muted">{{ msg.fechaEnvio | date:'medium' }}</small>
+        </div>
+        <p class="mb-1 text-muted">Para: <strong>{{ msg.destinatario.username }}</strong></p>
+        <p class="mb-3 mt-2">{{ msg.cuerpo }}</p>
+        <div class="text-end">
+             <button class="btn btn-sm btn-outline-danger" (click)="onDelete(msg.id)">
+                <i class="bi bi-trash"></i> Eliminar
+             </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && activeTab === 'compose'">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h4 class="card-title mb-4">Nuevo Mensaje</h4>
+        
+        <form (ngSubmit)="onSend()">
+          <div class="mb-3">
+            <label class="form-label">Destinatario (Username)</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control" [(ngModel)]="newMessage.usernameDestinatario" name="destinatario" placeholder="Ej: pepillo" required>
+            </div>
+            <div class="form-text">Debes escribir el nombre de usuario exacto del destinatario.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Asunto</label>
+            <input type="text" class="form-control" [(ngModel)]="newMessage.asunto" name="asunto" placeholder="Asunto del mensaje" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Mensaje</label>
+            <textarea class="form-control" [(ngModel)]="newMessage.cuerpo" name="cuerpo" rows="6" required></textarea>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="button" class="btn btn-secondary me-md-2" (click)="switchTab('inbox')">Cancelar</button>
+            <button type="submit" class="btn btn-primary px-4"><i class="bi bi-send"></i> Enviar Mensaje</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

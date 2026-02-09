@@ -1,11 +1,15 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
   <div class="container">
-    
-    <a class="navbar-brand fw-bold" routerLink="/home" style="cursor: pointer;">
+    <a class="navbar-brand fw-bold" routerLink="/home" style="cursor: pointer">
       <i class="bi bi-hammer me-2"></i>MannyWorker
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -17,15 +21,38 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/categorias" routerLinkActive="active">Categorías</a>
         </li>
-        <li class="nav-item">
+
+        <ng-container *ngIf="isLoggedIn">
+          <li class="nav-item">
             <a class="nav-link" routerLink="/tutoriales" routerLinkActive="active">Tutoriales</a>
-        </li>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/perfil" routerLinkActive="active">Mi perfil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/mensajes" routerLinkActive="active">Mensajes</a>
+          </li>
+          <li class="nav-item" *ngIf="isCliente">
+            <a class="nav-link" routerLink="/mis-tareas" routerLinkActive="active">
+              <i class="bi bi-list-task me-1"></i> Mis Tareas
+            </a>
+          </li>
+        </ng-container>
       </ul>
 
       <div class="d-flex gap-2">
-        <a routerLink="/login" class="btn btn-outline-light btn-sm">Iniciar Sesión</a>
-        
-        <a routerLink="/register" class="btn btn-light btn-sm text-primary fw-bold">Registrarse</a>
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/login" class="btn btn-outline-light btn-sm">Iniciar Sesión</a>
+          <a routerLink="/register" class="btn btn-light btn-sm text-primary fw-bold"
+            >Registrarse</a
+          >
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <button (click)="logout()" class="btn btn-danger btn-sm fw-bold">
+            <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+          </button>
+        </ng-container>
       </div>
     </div>
   </div>
