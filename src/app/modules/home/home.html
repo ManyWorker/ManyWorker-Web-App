@@ -1,0 +1,68 @@
+<div class="bg-dark text-secondary px-4 py-5 text-center mb-5">
+  <div class="py-5">
+    <h1 class="display-5 fw-bold text-white">MannyWorker</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="fs-5 mb-4 text-light">Encuentra profesionales expertos para tus reparaciones o postúlate para ayudar a otros. La red más grande de trabajadores y clientes.</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3 fw-bold">Publicar Tarea</button>
+        <button type="button" class="btn btn-outline-info btn-lg px-4">Explorar Tutoriales</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <section class="mb-5">
+    <div class="d-flex align-items-center mb-4">
+      <h2 class="h3 mb-0">Categorías Principales</h2>
+      <div class="flex-grow-1 ms-3 border-bottom"></div>
+    </div>
+    
+    <div class="row g-4">
+      <div *ngFor="let cat of categories" class="col-md-4 col-lg-2">
+        <div class="card h-100 text-center border-0 shadow-sm category-card">
+          <div class="card-body">
+            <div class="icon-box mb-3 mx-auto bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+              <i class="bi {{cat.icon}} text-primary fs-3"></i>
+            </div>
+            <h6 class="card-title fw-bold">{{cat.title}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="mb-4">Tutoriales Destacados</h3>
+    <div class="row">
+      <div *ngFor="let tutorial of featuredTutorials" class="col-md-6 mb-4">
+        <div class="card h-100 overflow-hidden shadow-sm">
+          <div class="row g-0">
+            <div class="col-md-4 bg-secondary d-flex align-items-center justify-content-center text-white">
+               <i class="bi bi-play-circle fs-1"></i>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{tutorial.title}}</h5>
+                <p class="card-text text-muted small">{{tutorial.summary}}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <span class="badge bg-light text-dark">Por: {{tutorial.author}}</span>
+                  <small class="text-muted">{{tutorial.date | date:'dd/MM/yyyy'}}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-5 my-5 border-top text-center">
+    <p class="text-muted">© 2026 MannyWorker. Todos los datos se transfieren mediante protocolos seguros (HTTPS).</p>
+    <ul class="nav justify-content-center">
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Términos y Condiciones</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">GDPR</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Contacto</a></li>
+    </ul>
+  </footer>
+</div>

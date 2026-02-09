@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CategoriaService } from '../../services/categoria.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './admin.html',
   styleUrl: './admin.css',
 })

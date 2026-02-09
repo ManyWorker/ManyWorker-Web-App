@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { ActorLogin } from '../../models/actor-login';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { ActorLogin } from '../../../models/actor-login';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './auth.html'
+  templateUrl: './login.html'
 })
-export class AuthComponent {
+export class Auth {
   user: ActorLogin = { username: '', password: '' };
 
   constructor(private authService: AuthService, private router: Router) {}

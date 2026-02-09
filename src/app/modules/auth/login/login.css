@@ -1,0 +1,24 @@
+.auth-wrapper {
+  /* Un fondo degradado suave para darle profundidad */
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.card {
+  transition: transform 0.3s ease;
+}
+
+/* Efecto sutil al pasar el ratón */
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #0d6efd;
+}
+
+/* Estilo para que el icono y el input parezcan una sola pieza */
+.input-group-text {
+  color: #6c757d;
+  border-right: none;
+}
