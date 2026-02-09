@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
   <div class="container">
-    <a class="navbar-brand fw-bold" routerLink="/home">
+    
+    <a class="navbar-brand fw-bold" routerLink="/home" style="cursor: pointer;">
       <i class="bi bi-hammer me-2"></i>MannyWorker
     </a>
 
@@ -16,11 +17,15 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/categorias" routerLinkActive="active">Categorías</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/tutoriales" routerLinkActive="active">Tutoriales</a>
+        </li>
       </ul>
 
       <div class="d-flex gap-2">
         <a routerLink="/login" class="btn btn-outline-light btn-sm">Iniciar Sesión</a>
-        <a routerLink="/auth/register" class="btn btn-light btn-sm text-primary fw-bold">Registrarse</a>
+        
+        <a routerLink="/register" class="btn btn-light btn-sm text-primary fw-bold">Registrarse</a>
       </div>
     </div>
   </div>

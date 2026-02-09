@@ -23,6 +23,8 @@ export const routes: Routes = [
     
     // Ruta por defecto: Redirigir al login si está vacía
     { path: '', component: Home },
+	{ path: 'home', component: Home },
+	
 
 
 ];
