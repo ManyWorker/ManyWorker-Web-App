@@ -8,14 +8,16 @@ import { Routes } from '@angular/router';
 import { TutorialComponent } from './modules/tutorial/tutorial';
 
 // Importamos los guards de seguridad
-import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { Home } from './modules/home/home';
 import { Auth } from './modules/auth/login/login';
+import { RegisterComponent } from './modules/auth/register/register';
 
 export const routes: Routes = [
     // Ruta pública: Login
     { path: 'login', component: Auth},
+	{ path: 'register', component: RegisterComponent},
+
 
     { path: 'tutorial', component: TutorialComponent },
     

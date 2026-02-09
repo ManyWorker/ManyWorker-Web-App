@@ -1,1 +1,97 @@
-<p>register works!</p>
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h3 class="mb-0 fw-bold">Crear una Cuenta</h3>
+          <small>Únete a MannyWorker</small>
+        </div>
+        
+        <div class="card-body p-4">
+          
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+          </div>
+          <div *ngIf="successMessage" class="alert alert-success" role="alert">
+            {{ successMessage }}
+          </div>
+
+          <form (ngSubmit)="register()" #registerForm="ngForm">
+            
+            <div class="mb-4 text-center">
+              <label class="form-label fw-bold d-block">¿Cómo quieres registrarte?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="rol" id="rolCliente" value="CLIENTE" [(ngModel)]="user.rol">
+                <label class="btn btn-outline-primary" for="rolCliente">
+                  <i class="bi bi-person"></i> Cliente
+                </label>
+            
+                <input type="radio" class="btn-check" name="rol" id="rolTrabajador" value="TRABAJADOR" [(ngModel)]="user.rol">
+                <label class="btn btn-outline-success" for="rolTrabajador">
+                  <i class="bi bi-tools"></i> Trabajador
+                </label>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Usuario</label>
+                <input type="text" class="form-control" name="username" [(ngModel)]="user.username" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Contraseña</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="user.password" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" [(ngModel)]="user.nombre" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Apellido</label>
+                <input type="text" class="form-control" name="apellido" [(ngModel)]="user.apellido" required>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" name="correo" [(ngModel)]="user.correo" placeholder="ejemplo@correo.com" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" name="telefono" [(ngModel)]="user.telefono">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Dirección</label>
+                <input type="text" class="form-control" name="direccion" [(ngModel)]="user.direccion">
+              </div>
+
+              <div *ngIf="isWorker()" class="col-12 mt-3 p-3 bg-light rounded border border-success">
+                <h6 class="text-success"><i class="bi bi-briefcase"></i> Datos Profesionales</h6>
+                <div class="mt-2">
+                  <label class="form-label">Nombre Comercial</label>
+                  <input type="text" class="form-control" name="nombreComercial" [(ngModel)]="user.nombreComercial" 
+                         placeholder="Ej: Reformas Pérez S.L." [required]="isWorker()">
+                  <div class="form-text">Si lo dejas vacío, se usará tu nombre completo.</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+              <button type="submit" class="btn btn-primary btn-lg fw-bold" [disabled]="!registerForm.form.valid">
+                Registrarse
+              </button>
+            </div>
+            
+            <div class="text-center mt-3">
+              <small class="text-muted">¿Ya tienes cuenta? <a routerLink="/login" class="text-decoration-none">Inicia Sesión</a></small>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

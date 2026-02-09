@@ -1,18 +1,47 @@
-<div class="tutorial-container">
-  <h1>Centro de Aprendizaje</h1>
-  <p>Consulta nuestros tutoriales para sacar el máximo partido a ManyWorker.</p>
-
-  <div class="tutorial-grid">
-    <div class="tutorial-card" *ngFor="let t of tutoriales">
-      <div class="card-header">
-        <h3>{{ t.titulo }}</h3>
-      </div>
-      <div class="card-body">
-        <p>{{ t.cuerpo }}</p>
-      </div>
-      <div class="card-footer">
-        <button class="btn-read">Leer más</button>
-      </div>
-    </div>
+<div class="container py-5">
+  
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold text-primary">Centro de Aprendizaje</h1>
+    <p class="lead text-secondary">Descubre guías y consejos de nuestros expertos.</p>
   </div>
+
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2 text-muted">Cargando tutoriales...</p>
+  </div>
+
+  <ng-container *ngIf="!cargando">
+
+    <div *ngIf="errorMensaje" class="alert alert-danger text-center">
+      {{ errorMensaje }}
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="!errorMensaje && tutoriales.length > 0">
+      <div class="col" *ngFor="let t of tutoriales">
+        <div class="card h-100 border-0 shadow-sm card-hover overflow-hidden">
+            <div class="card-img-top-wrapper position-relative">
+                <img *ngIf="t.imagenes && t.imagenes.length > 0" [src]="t.imagenes[0]" class="card-img-top object-fit-cover" style="height: 200px; width: 100%;">
+                <div *ngIf="!t.imagenes || t.imagenes.length === 0" class="bg-light d-flex align-items-center justify-content-center" style="height: 200px; width: 100%;"><i class="bi bi-image" style="font-size: 2rem;"></i></div>
+                <span class="position-absolute top-0 end-0 m-3 badge bg-white text-primary shadow-sm rounded-pill">Tutorial</span>
+            </div>
+            <div class="card-body px-4 pt-4">
+                <h5 class="card-title fw-bold text-dark">{{ t.titulo }}</h5>
+                <p class="card-text text-muted line-clamp-3">{{ t.resumen }}</p>
+            </div>
+            <div class="card-footer bg-transparent border-0 px-4 pb-4">
+                <button class="btn btn-outline-primary w-100 fw-semibold rounded-pill stretched-link">Leer más</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div *ngIf="!errorMensaje && tutoriales.length === 0" class="text-center py-5">
+      <i class="bi bi-journal-x text-muted" style="font-size: 3rem;"></i>
+      <p class="mt-3 text-muted">Aún no hay tutoriales disponibles.</p>
+    </div>
+
+  </ng-container>
+
 </div>

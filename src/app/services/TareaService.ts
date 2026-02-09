@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tarea } from '../model/Tarea';
+import { Tarea } from '../../model/Tarea';
 
 @Injectable({
   providedIn: 'root'
