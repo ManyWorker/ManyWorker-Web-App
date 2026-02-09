@@ -1,7 +1,9 @@
+import { Tarea } from './Tarea';
+
 export class Categoria {
-	id!: number
+    id!: number;
     titulo!: string;
     leyesAplicables!: string;
     esReparacion!: boolean;
-    //Lista de tareas FALTA
+    tareas: Tarea[] = []; // <--- Añadido: Lista de tareas
 }
