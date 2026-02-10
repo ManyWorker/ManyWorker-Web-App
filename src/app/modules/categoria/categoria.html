@@ -1,0 +1,36 @@
+<div class="categoria-container">
+    <h2>Módulo de Categorías</h2>
+
+    <div class="form-card">
+        <h3>Añadir Nueva Categoría</h3>
+        <div class="input-group">
+            <label>Título (UML):</label>
+            <input type="text" [(ngModel)]="nuevaCategoria.titulo" placeholder="Ej. Electricidad">
+        </div>
+        <div class="input-group" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="esReparacion" [(ngModel)]="nuevaCategoria.esReparacion"
+                style="width: 20px; height: 20px;">
+            <label for="esReparacion" style="cursor: pointer; font-weight: 600;">¿Es una categoría de
+                Reparación?</label>
+        </div>
+
+        <div class="input-group">
+            <label>Leyes Aplicables:</label>
+            <textarea [(ngModel)]="nuevaCategoria.leyesAplicables" placeholder="Describe las leyes..."></textarea>
+        </div>
+        <button class="btn-save" (click)="guardar()">Guardar Categoría</button>
+    </div>
+
+    <hr>
+
+    <h3>Categorías Registradas</h3>
+    <div class="list-container">
+        <div class="item-card" *ngFor="let cat of categorias">
+            <div>
+                <strong>{{cat.titulo}}</strong>
+                <p>{{cat.leyesAplicables}}</p>
+            </div>
+            <button class="btn-delete" (click)="borrar(cat.id)">Eliminar</button>
+        </div>
+    </div>
+</div>

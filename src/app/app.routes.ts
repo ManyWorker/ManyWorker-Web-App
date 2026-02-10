@@ -13,6 +13,7 @@ import { Mensajes } from './modules/mensajes/mensajes';
 import { Cliente } from './modules/cliente/cliente';
 import { MisSolicitudes } from './modules/mis-solicitudes/mis-solicitudes';
 import { TareaComponent } from './modules/tarea/tarea';
+import { CategoriaComponent } from './modules/categoria/categoria';
 
 export const routes: Routes = [
     // Ruta pública: Login
@@ -48,5 +49,8 @@ export const routes: Routes = [
 
 	// Ruta para gestión de Tareas
     { path: 'tareas', component: TareaComponent },
+
+	{ path: 'categorias', component: CategoriaComponent },
+  	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 
 ];
