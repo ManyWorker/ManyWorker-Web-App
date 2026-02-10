@@ -7,7 +7,7 @@ import { Categoria } from '../../model/Categoria';
   providedIn: 'root'
 })
 export class CategoriaService {
-  private apiUrl = 'http://localhost:8080/categoria'; // Ajusta según tu backend
+  private apiUrl = 'http://localhost:8080/categorias';
 
   constructor(private http: HttpClient) {}
 
@@ -15,8 +15,8 @@ export class CategoriaService {
     return this.http.get<Categoria[]>(`${this.apiUrl}/listar`);
   }
 
-  crear(categoria: Categoria): Observable<Categoria> {
-    return this.http.post<Categoria>(`${this.apiUrl}/guardar`, categoria);
+  crear(categoria: Categoria): Observable<any> {
+    return this.http.post(this.apiUrl, categoria, { responseType: 'text' });
   }
 
   eliminarCategoria(id: number): Observable<any> {

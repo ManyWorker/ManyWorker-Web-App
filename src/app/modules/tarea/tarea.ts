@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Tarea } from '../../../model/Tarea';
 import { Categoria } from '../../../model/Categoria';
 import { TareaService } from '../../services/TareaService';
-import { CategoriaService } from '../../services/CategoriaService';
+import { CategoriaService } from '../../services/categoria.service';
 
 @Component({
   selector: 'app-tarea',
@@ -37,9 +37,9 @@ export class TareaComponent implements OnInit {
   }
 
   cargarCategorias(): void {
-    this.categoriaService.getAll().subscribe({
-      next: (data) => this.categorias = data,
-      error: (e) => console.error('Error cargando categorías', e)
+    this.categoriaService.listar().subscribe({
+      next: (data: any) => this.categorias = data,
+      error: (e: any) => console.error('Error cargando categorías', e)
     });
   }
 
