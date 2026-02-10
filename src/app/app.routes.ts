@@ -16,6 +16,7 @@ import { Perfil } from './modules/perfil/perfil';
 import { Contrasena } from './modules/auth/contrasena/contrasena';
 import { Mensajes } from './modules/mensajes/mensajes';
 import { Cliente } from './modules/cliente/cliente';
+import { MisSolicitudes } from './modules/mis-solicitudes/mis-solicitudes';
 
 export const routes: Routes = [
     // Ruta pública: Login
@@ -41,6 +42,9 @@ export const routes: Routes = [
 	{ path: 'mensajes', component: Mensajes },
 
 	{ path: 'mis-tareas', component: Cliente },
+
+	{ path: 'mis-solicitudes', component: MisSolicitudes },
+
 
 
 
