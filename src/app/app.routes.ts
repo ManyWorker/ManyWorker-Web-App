@@ -15,7 +15,10 @@ import { RegisterComponent } from './modules/auth/register/register';
 import { Perfil } from './modules/perfil/perfil';
 import { Contrasena } from './modules/auth/contrasena/contrasena';
 import { Mensajes } from './modules/mensajes/mensajes';
-import { Cliente } from './modules/cliente/cliente';
+import { ClienteComponent } from './modules/cliente/cliente';
+import { AdministradorComponent } from './modules/administrador/administrador';
+import { TrabajadorComponent } from './modules/trabajador/trabajador';
+
 
 export const routes: Routes = [
     // Ruta pública: Login
@@ -40,7 +43,9 @@ export const routes: Routes = [
 	// Ruta para enviar mensajes
 	{ path: 'mensajes', component: Mensajes },
 
-	{ path: 'mis-tareas', component: Cliente },
+	{ path: 'mis-tareas', component: ClienteComponent },
+	{ path: 'tareas-disponibles', component: TrabajadorComponent },
+	{ path: 'administrador', component: AdministradorComponent },
 
 
 
