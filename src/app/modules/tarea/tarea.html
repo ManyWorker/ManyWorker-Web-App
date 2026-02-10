@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <h2>Gestión de Tareas</h2>
+
+  <div class="card mb-4 p-3 shadow-sm">
+    <h4>Publicar nueva Tarea</h4>
+    <form (ngSubmit)="guardarTarea()">
+      
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea class="form-control" [(ngModel)]="nuevaTarea.descripcion" name="descripcion" required placeholder="¿Qué necesitas que hagan?"></textarea>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Dirección</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevaTarea.direccion" name="direccion" required>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Precio Max (€)</label>
+          <input type="number" class="form-control" [(ngModel)]="nuevaTarea.precioMax" name="precioMax" required>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Categoría</label>
+          <select class="form-select" [(ngModel)]="nuevaTarea.categoria" name="categoria" required>
+            <option [ngValue]="undefined" disabled selected>Selecciona una...</option>
+            <option *ngFor="let cat of categorias" [ngValue]="cat">
+              {{ cat.titulo }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Fecha Inicio</label>
+          <input type="date" class="form-control" [(ngModel)]="nuevaTarea.fechaPublicacion" name="fechaPub">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Fecha Fin</label>
+          <input type="date" class="form-control" [(ngModel)]="nuevaTarea.fechaFin" name="fechaFin">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success">Publicar Tarea</button>
+    </form>
+  </div>
+
+  <hr>
+
+  <h3>Tareas Disponibles</h3>
+  <div class="row">
+    <div class="col-md-6 mb-3" *ngFor="let tarea of tareas">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span class="badge bg-primary">{{ tarea.categoria?.titulo || 'Sin Categoría' }}</span>
+          <small class="text-muted">{{ tarea.fechaPublicacion }}</small>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Presupuesto: {{ tarea.precioMax }}€</h5>
+          <p class="card-text">{{ tarea.descripcion }}</p>
+          <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ tarea.direccion }}</p>
+          
+          <div *ngIf="tarea.solicitudes && tarea.solicitudes.length > 0" class="alert alert-info mt-2">
+            <strong>Solicitudes recibidas:</strong> {{ tarea.solicitudes.length }}
+            <ul>
+               <li *ngFor="let sol of tarea.solicitudes">
+                 Solicitud ID: {{ sol.id }} - {{ sol.aceptado ? 'Aceptada' : 'Pendiente' }}
+               </li>
+            </ul>
+          </div>
+          <div *ngIf="!tarea.solicitudes || tarea.solicitudes.length === 0" class="text-muted small">
+             No hay solicitudes aún.
+          </div>
+
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-danger btn-sm" (click)="eliminarTarea(tarea.id)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

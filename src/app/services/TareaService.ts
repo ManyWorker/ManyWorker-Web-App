@@ -7,7 +7,7 @@ import { Tarea } from '../../model/Tarea';
   providedIn: 'root'
 })
 export class TareaService {
-  private url = "http://localhost:8080/tarea";
+  private url = "http://localhost:8080/tarea"; 
 
   constructor(private http: HttpClient) { }
 
@@ -21,6 +21,11 @@ export class TareaService {
 
   create(tarea: Tarea): Observable<Tarea> {
     return this.http.post<Tarea>(this.url, tarea);
+  }
+
+  // Método para guardar tareas que ya tiene solicitudes
+  update(id: number, tarea: Tarea): Observable<Tarea> {
+    return this.http.put<Tarea>(`${this.url}/${id}`, tarea);
   }
 
   delete(id: number): Observable<void> {

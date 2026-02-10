@@ -1,10 +1,5 @@
 import { Routes } from '@angular/router';
 
-// Importamos los componentes
-//import { AdminComponent } from './modules/admin/admin';
-//import { ClienteComponent } from './modules/cliente/cliente';
-//import { TrabajadorComponent } from './modules/trabajador/trabajador';
-//import { MensajesComponent } from './modules/mensajes/mensajes';
 import { TutorialComponent } from './modules/tutorial/tutorial';
 
 // Importamos los guards de seguridad
@@ -16,6 +11,7 @@ import { Perfil } from './modules/perfil/perfil';
 import { Contrasena } from './modules/auth/contrasena/contrasena';
 import { Mensajes } from './modules/mensajes/mensajes';
 import { Cliente } from './modules/cliente/cliente';
+import { TareaComponent } from './modules/tarea/tarea';
 
 export const routes: Routes = [
     // Ruta pública: Login
@@ -42,9 +38,7 @@ export const routes: Routes = [
 
 	{ path: 'mis-tareas', component: Cliente },
 
-
-
-	
-
+	// Ruta para gestión de Tareas
+    { path: 'tareas', component: TareaComponent },
 
 ];

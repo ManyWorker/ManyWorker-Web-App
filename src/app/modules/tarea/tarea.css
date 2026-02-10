@@ -1,0 +1,38 @@
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 1px solid #e0e0e0;
+}
+
+/* Efecto al pasar el ratón por encima de una tarea */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-color: #b0b0b0;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ebebeb;
+    font-weight: 600;
+}
+
+.badge {
+    font-size: 0.85rem;
+    padding: 0.5em 0.8em;
+}
+
+/* Estilos para el formulario */
+form label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.2rem;
+}
+
+.alert-info {
+    font-size: 0.9rem;
+}
+
+.alert-info ul {
+    margin-bottom: 0;
+    padding-left: 1.2rem;
+}

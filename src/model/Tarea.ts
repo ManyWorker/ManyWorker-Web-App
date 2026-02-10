@@ -1,8 +1,17 @@
-export interface Tarea {
-    id: number;
-    contenido: string; // O 'descripcion', ajusta según tu backend
-    precioBase: number; // Suponiendo que tiene precio
-    tiempoEstimado: number; 
-    // Si la tarea pertenece a una categoría:
-    categoriaId?: number; 
+import { Categoria } from './Categoria';
+import { Solicitud } from './Solicitud';
+
+export class Tarea {
+    id!: number;
+    fechaPublicacion!: string; // Usamos string para facilitar el manejo con inputs de fecha
+    fechaFin!: string;
+    descripcion!: string;
+    direccion!: string;
+    precioMax!: number;
+    
+    // Relación con Categoria (Un objeto completo)
+    categoria!: Categoria;
+    
+    // Lista de solicitudes (Inicializada vacía para evitar errores de undefined)
+    solicitudes: Solicitud[] = [];
 }
