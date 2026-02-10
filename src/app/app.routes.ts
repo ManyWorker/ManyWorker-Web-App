@@ -11,11 +11,8 @@ import { Perfil } from './modules/perfil/perfil';
 import { Contrasena } from './modules/auth/contrasena/contrasena';
 import { Mensajes } from './modules/mensajes/mensajes';
 import { Cliente } from './modules/cliente/cliente';
-<<<<<<< HEAD
 import { MisSolicitudes } from './modules/mis-solicitudes/mis-solicitudes';
-=======
 import { TareaComponent } from './modules/tarea/tarea';
->>>>>>> origin
 
 export const routes: Routes = [
     // Ruta pública: Login
