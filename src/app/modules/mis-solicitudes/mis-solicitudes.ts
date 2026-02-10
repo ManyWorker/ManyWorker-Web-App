@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http'; // Asegúrate de importar esto si usas servicios aquí
+import { HttpClientModule } from '@angular/common/http'; 
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { TareaService } from '../../services/TareaService';
