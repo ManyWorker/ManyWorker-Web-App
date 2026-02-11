@@ -16,44 +16,31 @@ import { TrabajadorComponent } from './modules/trabajador/trabajador';
 import { MisSolicitudes } from './modules/mis-solicitudes/mis-solicitudes';
 import { TareaComponent } from './modules/tarea/tarea';
 import { CategoriaComponent } from './modules/categoria/categoria';
+import { Error404Component } from './modules/error404/error404';
 
 export const routes: Routes = [
-    // Ruta pública: Login
-    { path: 'login', component: Auth},
-	{ path: 'register', component: RegisterComponent},
+    // Rutas públicas
+    { path: 'login', component: Auth },
+    { path: 'register', component: RegisterComponent },
+    { path: 'home', component: Home },
+    { path: '', component: Home }, // Página de inicio por defecto
 
-
+    // Tutoriales y Perfil
     { path: 'tutorial', component: TutorialComponent },
-    
-    // Ruta por defecto: Redirigir al login si está vacía
-    { path: '', component: Home },
-	{ path: 'home', component: Home },
+    { path: 'tutoriales', component: TutorialComponent },
+    { path: 'perfil', component: Perfil },
+    { path: 'cambiar-contrasena', component: Contrasena },
 
+    // Mensajería y Roles
+    { path: 'mensajes', component: Mensajes },
+    { path: 'tareas-disponibles', component: TrabajadorComponent },
+    { path: 'administrador', component: AdministradorComponent },
+    { path: 'mis-solicitudes', component: MisSolicitudes },
 
-	// Ruta para tutoriales publico
-	{ path: 'tutoriales', component: TutorialComponent },
-	// Ruta para el perfil personal
-	{ path: 'perfil', component: Perfil },
-	{ path: 'cambiar-contrasena', component: Contrasena },
-	
-
-	// Ruta para enviar mensajes
-	{ path: 'mensajes', component: Mensajes },
-
-	{ path: 'tareas-disponibles', component: TrabajadorComponent },
-	{ path: 'administrador', component: AdministradorComponent },
-
-	{ path: 'mis-solicitudes', component: MisSolicitudes },
-
-
-
-
-	
-
-	// Ruta para gestión de Tareas
+    // Gestión de Tareas y Categorías
     { path: 'tareas', component: TareaComponent },
+    { path: 'categorias', component: CategoriaComponent },
 
-	{ path: 'categorias', component: CategoriaComponent },
-  	{ path: '', redirectTo: '/login', pathMatch: 'full' },
-
+    // GESTIÓN DE ERROR 404
+    { path: '**', component: Error404Component }
 ];
