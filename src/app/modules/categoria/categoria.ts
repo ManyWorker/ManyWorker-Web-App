@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoriaService } from '../../services/categoria.service';
 import { Categoria } from '../../../model/Categoria';
+import { finalize } from 'rxjs/operators'; 
 
 @Component({
   selector: 'app-categoria',
@@ -14,6 +15,7 @@ import { Categoria } from '../../../model/Categoria';
 export class CategoriaComponent implements OnInit {
   categorias: Categoria[] = [];
   nuevaCategoria: Categoria = { titulo: '', leyesAplicables: '' };
+  cargando: boolean = false;
 
   constructor(private categoriaService: CategoriaService, private cdr: ChangeDetectorRef) {}
 
@@ -22,8 +24,16 @@ export class CategoriaComponent implements OnInit {
   }
 
   cargarCategorias() {
-    this.categoriaService.listar().subscribe(data => this.categorias = data);
-    this.cdr.detectChanges();
+	this.cargando = true;
+	this.cdr.detectChanges();
+
+    this.categoriaService.listar()
+      .pipe(
+        finalize(() => {
+          this.cargando = false;
+          this.cdr.detectChanges(); 
+        })
+      ).subscribe(data => this.categorias = data);
   }
 
   guardar() {
