@@ -40,7 +40,6 @@ export const routes: Routes = [
 	// Ruta para enviar mensajes
 	{ path: 'mensajes', component: Mensajes },
 
-	{ path: 'mis-tareas', component: ClienteComponent },
 	{ path: 'tareas-disponibles', component: TrabajadorComponent },
 	{ path: 'administrador', component: AdministradorComponent },
 

@@ -17,7 +17,18 @@ export class TareaComponent implements OnInit {
 
   tareas: Tarea[] = [];
   categorias: Categoria[] = []; 
-  nuevaTarea: Tarea = new Tarea();
+  
+  // CORRECCIÓN: Inicialización como objeto plano
+  nuevaTarea: Tarea = {
+      id: 0,
+      contenido: '',
+      precioBase: 0,
+      tiempoEstimado: 0,
+      descripcion: '',
+      direccion: '',
+      precioMax: 0,
+      solicitudes: []
+  };
 
   constructor(
     private tareaService: TareaService,
@@ -49,11 +60,25 @@ export class TareaComponent implements OnInit {
       return;
     }
     
+    // Puente de datos
+    (this.nuevaTarea as any).contenido = this.nuevaTarea.descripcion;
+
     this.tareaService.create(this.nuevaTarea).subscribe({
       next: (res) => {
         alert('Tarea creada con éxito');
         this.cargarTareas(); 
-        this.nuevaTarea = new Tarea(); // Reseteamos el formulario
+        
+        // CORRECCIÓN: Resetear el formulario correctamente
+        this.nuevaTarea = {
+            id: 0,
+            contenido: '',
+            precioBase: 0,
+            tiempoEstimado: 0,
+            descripcion: '',
+            direccion: '',
+            precioMax: 0,
+            solicitudes: []
+        }; 
       },
       error: (e) => console.error('Error guardando tarea', e)
     });

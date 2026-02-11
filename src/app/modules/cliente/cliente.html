@@ -11,50 +11,77 @@
   <div [ngSwitch]="activeTab" *ngIf="!isLoading">
     <div *ngSwitchCase="'mis-tareas'">
       
-      <div class="card p-3 mb-4 shadow-sm">
-        <h5>Nueva Tarea de Reparación</h5>
+      <div class="card p-4 mb-4 shadow-sm">
+        <h5 class="mb-3 text-primary"><i class="bi bi-plus-circle"></i> Nueva Tarea de Reparación</h5>
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Categoría del trabajo</label>
+            <select class="form-select" [(ngModel)]="nuevaTarea.categoria">
+                <option [ngValue]="undefined" disabled selected>Selecciona una categoría (Fontanería, Electricidad...)</option>
+                <option *ngFor="let cat of categorias" [ngValue]="cat">
+                    {{ cat.titulo }}
+                </option>
+            </select>
+        </div>
+
         <div class="row g-2">
           <div class="col-md-5">
-            <input type="text" class="form-control" [(ngModel)]="nuevaTarea.descripcion" placeholder="¿Qué necesitas arreglar?">
+            <label class="form-label visually-hidden">Descripción</label>
+            <input type="text" class="form-control" [(ngModel)]="nuevaTarea.descripcion" placeholder="¿Qué necesitas arreglar? (Ej: Grifo goteando)">
           </div>
           <div class="col-md-3">
+            <label class="form-label visually-hidden">Precio</label>
             <div class="input-group">
               <span class="input-group-text">€</span>
               <input type="number" class="form-control" [(ngModel)]="nuevaTarea.precioMax" placeholder="Precio máx.">
             </div>
           </div>
           <div class="col-md-2">
+            <label class="form-label visually-hidden">Dirección</label>
             <input type="text" class="form-control" [(ngModel)]="nuevaTarea.direccion" placeholder="Dirección">
           </div>
           <div class="col-md-2">
-            <button class="btn btn-primary w-100" (click)="saveTarea()">Publicar</button>
+            <button class="btn btn-primary w-100 fw-bold" (click)="saveTarea()">Publicar</button>
           </div>
         </div>
       </div>
 
-      <table class="table table-hover border mt-3">
-        <thead class="table-light">
-          <tr>
-            <th>Descripción del trabajo</th>
-            <th>Precio Máx.</th>
-            <th>Dirección</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let t of cliente.tareas; let i = index">
-            <td><strong>{{ t.descripcion }}</strong></td>
-            <td>{{ t.precioMax }} €</td>
-            <td>{{ t.direccion }}</td>
-            <td class="text-center">
-              <button class="btn btn-sm btn-outline-danger" (click)="deleteTarea(i)">Eliminar</button>
-            </td>
-          </tr>
-          <tr *ngIf="!cliente.tareas || cliente.tareas.length === 0">
-            <td colspan="4" class="text-center">No has publicado tareas todavía.</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-hover border mt-3 align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Categoría</th>
+              <th>Descripción del trabajo</th>
+              <th>Precio Máx.</th>
+              <th>Dirección</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of cliente.tareas; let i = index">
+              <td>
+                <span class="badge bg-secondary">{{ t.categoria?.titulo || 'General' }}</span>
+              </td>
+              <td><strong>{{ t.descripcion }}</strong></td>
+              <td>{{ t.precioMax }} €</td>
+              <td>{{ t.direccion }}</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteTarea(i)">
+                    <i class="bi bi-trash"></i> Eliminar
+                </button>
+              </td>
+            </tr>
+            
+            <tr *ngIf="!cliente.tareas || cliente.tareas.length === 0">
+              <td colspan="5" class="text-center py-5 text-muted">
+                <i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>
+                No has publicado tareas todavía.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
     </div>
   </div>
 </div>
