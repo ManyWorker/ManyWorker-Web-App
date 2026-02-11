@@ -39,8 +39,7 @@ export class SolicitudService {
   }
 
   rechazar(id: number): Observable<any> {
-    const body = { id: id };
-    return this.http.put(`${this.url}/rechazar`, body, { headers: this.getHeaders(), responseType: 'text' as 'json' });
+    return this.http.put(`${this.url}/${id}/rechazar`, {}, { headers: this.getHeaders(), responseType: 'text' as 'json' });
   }
   
   delete(id: number): Observable<any> {
