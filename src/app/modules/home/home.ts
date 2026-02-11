@@ -1,9 +1,11 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, DatePipe],
+  standalone: true, // Asegura que es standalone (aunque funciona sin ponerlo explícito en v17+, es buena práctica)
+  imports: [CommonModule, DatePipe, RouterLink], // <--- IMPORTANTE: Añadir RouterLink aquí
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
