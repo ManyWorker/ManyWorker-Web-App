@@ -51,7 +51,10 @@ export class CategoriaComponent implements OnInit {
 
   borrar(id?: number) {
     if (id && confirm('¿Seguro que quieres eliminar esta categoría?')) {
-      this.categoriaService.eliminarCategoria(id).subscribe(() => this.cargarCategorias());
+      this.categoriaService.eliminarCategoria(id).subscribe({
+        next: () => this.cargarCategorias(),
+        error: (err) => console.error('Error al borrar:', err)
+      });
     }
   }
 }
