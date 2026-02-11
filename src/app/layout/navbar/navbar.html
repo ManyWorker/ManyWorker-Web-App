@@ -14,22 +14,27 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link" routerLink="/home" routerLinkActive="active">Inicio</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" routerLink="/tutoriales" routerLinkActive="active">Tutoriales</a>
+          <a class="nav-link" routerLink="/tutoriales" routerLinkActive="active">Tutoriales</a>
         </li>
 
         <ng-container *ngIf="isLoggedIn">
-          
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/categorias" routerLinkActive="active">Categorías</a>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link" routerLink="/perfil" routerLinkActive="active">Mi perfil</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/mensajes" routerLinkActive="active">Mensajes</a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" routerLink="/mis-solicitudes" routerLinkActive="active">Mis Solicitudes</a>
           </li>
 
           <li class="nav-item" *ngIf="isCliente">
@@ -37,7 +42,7 @@
               <i class="bi bi-plus-square me-1"></i> Gestionar tareas
             </a>
           </li>
-          
+
           <li class="nav-item" *ngIf="isTrabajador">
             <a class="nav-link" routerLink="/mis-solicitudes" routerLinkActive="active">
               <i class="bi bi-briefcase me-1"></i> Mis Solicitudes
@@ -47,10 +52,11 @@
       </ul>
 
       <div class="d-flex gap-2">
-        
         <ng-container *ngIf="!isLoggedIn">
           <a routerLink="/login" class="btn btn-outline-light btn-sm">Iniciar Sesión</a>
-          <a routerLink="/register" class="btn btn-light btn-sm text-primary fw-bold">Registrarse</a>
+          <a routerLink="/register" class="btn btn-light btn-sm text-primary fw-bold"
+            >Registrarse</a
+          >
         </ng-container>
 
         <ng-container *ngIf="isLoggedIn">
@@ -59,7 +65,6 @@
           </button>
         </ng-container>
       </div>
-
     </div>
   </div>
 </nav>
