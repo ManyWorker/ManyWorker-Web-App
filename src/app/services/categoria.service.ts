@@ -12,7 +12,7 @@ export class CategoriaService {
   constructor(private http: HttpClient) {}
 
   listar(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(`${this.apiUrl}/listar`);
+    return this.http.get<Categoria[]>(this.apiUrl);
   }
 
   crear(categoria: Categoria): Observable<any> {

@@ -12,22 +12,19 @@
     <div *ngSwitchCase="'mis-tareas'">
       
       <div class="card p-3 mb-4 shadow-sm">
-        <h5>Nueva Solicitud de Reparación</h5>
+        <h5>Nueva Tarea de Reparación</h5>
         <div class="row g-2">
           <div class="col-md-5">
-            <input type="text" class="form-control" [(ngModel)]="nuevaTarea.contenido" placeholder="¿Qué necesitas arreglar?">
+            <input type="text" class="form-control" [(ngModel)]="nuevaTarea.descripcion" placeholder="¿Qué necesitas arreglar?">
           </div>
           <div class="col-md-3">
             <div class="input-group">
               <span class="input-group-text">€</span>
-              <input type="number" class="form-control" [(ngModel)]="nuevaTarea.precioBase" placeholder="Precio">
+              <input type="number" class="form-control" [(ngModel)]="nuevaTarea.precioMax" placeholder="Precio máx.">
             </div>
           </div>
           <div class="col-md-2">
-            <div class="input-group">
-              <input type="number" class="form-control" [(ngModel)]="nuevaTarea.tiempoEstimado" placeholder="Horas">
-              <span class="input-group-text">h</span>
-            </div>
+            <input type="text" class="form-control" [(ngModel)]="nuevaTarea.direccion" placeholder="Dirección">
           </div>
           <div class="col-md-2">
             <button class="btn btn-primary w-100" (click)="saveTarea()">Publicar</button>
@@ -39,21 +36,21 @@
         <thead class="table-light">
           <tr>
             <th>Descripción del trabajo</th>
-            <th>Precio Base</th>
-            <th>Tiempo Est.</th>
+            <th>Precio Máx.</th>
+            <th>Dirección</th>
             <th class="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let t of cliente.tareas; let i = index">
-            <td><strong>{{ t.contenido }}</strong></td>
-            <td>{{ t.precioBase }} €</td>
-            <td>{{ t.tiempoEstimado }} horas</td>
+            <td><strong>{{ t.descripcion }}</strong></td>
+            <td>{{ t.precioMax }} €</td>
+            <td>{{ t.direccion }}</td>
             <td class="text-center">
               <button class="btn btn-sm btn-outline-danger" (click)="deleteTarea(i)">Eliminar</button>
             </td>
           </tr>
-          <tr *ngIf="cliente.tareas.length === 0">
+          <tr *ngIf="!cliente.tareas || cliente.tareas.length === 0">
             <td colspan="4" class="text-center">No has publicado tareas todavía.</td>
           </tr>
         </tbody>

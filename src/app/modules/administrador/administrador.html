@@ -19,7 +19,6 @@
           <tr style="background-color: #eee;">
             <th>ID</th>
             <th>Nombre</th>
-            <th>Tareas</th>
             <th>Acción</th>
           </tr>
         </thead>
@@ -27,9 +26,8 @@
           <tr *ngFor="let cat of categorias">
             <td>{{ cat.id }}</td>
             <td>{{ cat.titulo }}</td>
-            <td>{{ cat.tareas ? cat.tareas.length : 0 }}</td>
             <td>
-              <button (click)="onDeleteCategoria(cat)" [disabled]="cat.tareas && cat.tareas.length > 0">
+              <button (click)="onDeleteCategoria(cat)">
                 Eliminar
               </button>
             </td>

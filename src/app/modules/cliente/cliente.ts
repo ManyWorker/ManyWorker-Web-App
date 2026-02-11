@@ -16,13 +16,7 @@ import { ClienteService } from '../../services/ClienteService';
 export class ClienteComponent implements OnInit {
   cliente: Cliente = { tareas: [] } as unknown as Cliente;
   
-  // Ajustado a tu interfaz: id es opcional al crear, números a 0
-  nuevaTarea: Tarea = {
-    id: 0,
-    contenido: '',
-    precioBase: 0,
-    tiempoEstimado: 0
-  };
+  nuevaTarea: Tarea = new Tarea();
 
   activeTab: 'mis-tareas' | 'solicitudes' = 'mis-tareas';
   isLoading = true;
@@ -65,21 +59,21 @@ export class ClienteComponent implements OnInit {
   }
 
   saveTarea(): void {
-    if (!this.nuevaTarea.contenido) {
-      this.errorMessage = 'El contenido de la tarea es obligatorio.';
+    if (!this.nuevaTarea.descripcion) {
+      this.errorMessage = 'La descripción de la tarea es obligatoria.';
       return;
     }
 
     this.isLoading = true;
-    // Creamos una copia para evitar problemas de referencia
     const tareaParaEnviar = { ...this.nuevaTarea };
     
+    if (!this.cliente.tareas) this.cliente.tareas = [];
     this.cliente.tareas.push(tareaParaEnviar);
 
     this.clienteService.update(this.currentUser.id, this.cliente).subscribe({
       next: () => {
         this.successMessage = 'Tarea publicada correctamente.';
-        this.nuevaTarea = { id: 0, contenido: '', precioBase: 0, tiempoEstimado: 0 };
+        this.nuevaTarea = new Tarea();
         this.loadData();
       },
       error: (err) => {
@@ -92,7 +86,9 @@ export class ClienteComponent implements OnInit {
 
   deleteTarea(index: number): void {
     if (!confirm('¿Borrar esta tarea?')) return;
-    this.cliente.tareas.splice(index, 1);
-    this.clienteService.update(this.currentUser.id, this.cliente).subscribe(() => this.loadData());
+    if (this.cliente.tareas) {
+      this.cliente.tareas.splice(index, 1);
+      this.clienteService.update(this.currentUser.id, this.cliente).subscribe(() => this.loadData());
+    }
   }
 }

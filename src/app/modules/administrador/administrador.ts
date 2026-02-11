@@ -20,7 +20,6 @@ export class AdministradorComponent implements OnInit {
 
   categorias: Categoria[] = [];
   
-  // Usamos tipo any para evitar conflictos con las interfaces Actor/ActorLogin
   nuevoAdmin: any = {
     nombre: '',
     apellido: '',
@@ -89,18 +88,23 @@ export class AdministradorComponent implements OnInit {
   }
 
   onDeleteCategoria(cat: Categoria): void {
-    if (cat.tareas && cat.tareas.length > 0) {
-      alert('No se puede eliminar: tiene tareas asociadas.');
+    if (!confirm('¿Seguro que quieres eliminar esta categoría?')) return;
+
+    if (cat.id == null) {
+      this.errorMsg = 'La categoría no tiene un ID válido.';
       return;
     }
-    if (!confirm('¿Seguro que quieres eliminar esta categoría?')) return;
 
     this.adminService.deleteCategoria(cat.id).subscribe({
       next: () => {
         this.successMsg = 'Categoría eliminada.';
         this.loadCategorias();
       },
-      error: () => { this.errorMsg = 'Error al eliminar.'; }
+      error: (err) => {
+        // Si el backend devuelve error porque tiene tareas asociadas, lo mostramos
+        this.errorMsg = err.error?.message || 'Error al eliminar. Puede que tenga tareas asociadas.';
+        this.cd.detectChanges();
+      }
     });
   }
 
