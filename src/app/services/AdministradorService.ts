@@ -4,14 +4,14 @@ import { Observable } from 'rxjs';
 import { Categoria } from '../../model/Categoria';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
-  private adminUrl = "http://localhost:8080/admin";
-  private categoriaUrl = "http://localhost:8080/categoria";
-  private mensajesUrl = "http://localhost:8080/mensajes";
+  private adminUrl = 'http://localhost:8080/admin';
+  private categoriaUrl = 'http://localhost:8080/categoria';
+  private mensajesUrl = 'http://localhost:8080/mensajes';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // a. Crear cuentas para nuevos administradores
   // FIX: El endpoint correcto es POST /admin (no /admin/register)

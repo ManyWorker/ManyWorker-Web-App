@@ -1,43 +1,151 @@
-<div style="padding: 20px; font-family: Arial, sans-serif;">
-  <h1>Panel de Administración</h1>
+<div class="container mt-5 mb-5">
 
-  <div style="margin-bottom: 20px;">
-    <button (click)="switchTab('nuevo-admin')">Nuevo Admin</button>
-    <button (click)="switchTab('broadcast')">Broadcast</button>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark">
+      <i class="bi bi-shield-lock-fill text-primary me-2"></i>Panel de Administración
+    </h2>
+    <span class="badge bg-secondary">Versión 1.0</span>
   </div>
 
-  <div *ngIf="successMsg" style="color: green; font-weight: bold; margin-bottom: 10px;">{{ successMsg }}</div>
-  <div *ngIf="errorMsg" style="color: red; font-weight: bold; margin-bottom: 10px;">{{ errorMsg }}</div>
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-2">
+      <ul class="nav nav-pills nav-fill gap-2">
+        <li class="nav-item">
+          <button class="nav-link fw-bold" 
+                  [class.active]="activeTab === 'nuevo-admin'" 
+                  (click)="switchTab('nuevo-admin')">
+            <i class="bi bi-person-plus-fill me-2"></i>Nuevo Admin
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-bold" 
+                  [class.active]="activeTab === 'broadcast'" 
+                  (click)="switchTab('broadcast')">
+            <i class="bi bi-megaphone-fill me-2"></i>Broadcast (Mensaje Global)
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="successMsg" class="alert alert-success shadow-sm text-center fade show" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i>{{ successMsg }}
+  </div>
+
+  <div *ngIf="errorMsg" class="alert alert-danger shadow-sm text-center fade show" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMsg }}
+  </div>
 
   <div [ngSwitch]="activeTab">
 
     <div *ngSwitchCase="'nuevo-admin'">
-      <h3>Crear Nuevo Administrador</h3>
-      <form (ngSubmit)="onRegisterAdmin()" style="display: flex; flex-direction: column; max-width: 400px; gap: 10px;">
-        
-        <input type="text" name="nombre" [(ngModel)]="nuevoAdmin.nombre" placeholder="Nombre" required>
-        <input type="text" name="apellido" [(ngModel)]="nuevoAdmin.apellido" placeholder="Primer Apellido" required>
-        <input type="text" name="apellido2" [(ngModel)]="nuevoAdmin.apellido2" placeholder="Segundo Apellido">
-        <input type="email" name="correo" [(ngModel)]="nuevoAdmin.correo" placeholder="Email" required>
-        <input type="text" name="telefono" [(ngModel)]="nuevoAdmin.telefono" placeholder="Teléfono">
-        <input type="text" name="direccion" [(ngModel)]="nuevoAdmin.direccion" placeholder="Dirección">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+          <h5 class="mb-0 fw-bold text-dark">Registrar credenciales</h5>
+        </div>
+        <div class="card-body p-4">
+          
+          <form (ngSubmit)="onRegisterAdmin()">
+            <div class="row g-3">
+              
+              <div class="col-12 text-muted small fw-bold text-uppercase mb-1">Información Personal</div>
+              
+              <div class="col-md-4">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" [(ngModel)]="nuevoAdmin.nombre" placeholder="Ej: Laura" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Primer Apellido</label>
+                <input type="text" class="form-control" name="apellido" [(ngModel)]="nuevoAdmin.apellido" placeholder="Ej: García" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Segundo Apellido</label>
+                <input type="text" class="form-control" name="apellido2" [(ngModel)]="nuevoAdmin.apellido2" placeholder="Opcional">
+              </div>
 
-        <hr>
-        <input type="text" name="username" [(ngModel)]="nuevoAdmin.username" placeholder="Username" required>
-        <input type="password" name="password" [(ngModel)]="nuevoAdmin.password" placeholder="Password" required>
+              <div class="col-md-6">
+                <label class="form-label">Correo Electrónico</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" name="correo" [(ngModel)]="nuevoAdmin.correo" placeholder="admin@manyworker.com" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-telephone"></i></span>
+                  <input type="text" class="form-control" name="telefono" [(ngModel)]="nuevoAdmin.telefono" placeholder="+34 ...">
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <label class="form-label">Dirección</label>
+                <input type="text" class="form-control" name="direccion" [(ngModel)]="nuevoAdmin.direccion" placeholder="Calle Principal, 123">
+              </div>
 
-        <button type="submit" [disabled]="isLoading" style="margin-top: 20px; padding: 10px;">
-          {{ isLoading ? 'Guardando...' : 'Registrar Administrador' }}
-        </button>
-      </form>
+              <div class="col-12"><hr class="my-2 opacity-25"></div>
+
+              <div class="col-12 text-muted small fw-bold text-uppercase mb-1">Seguridad</div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Nombre de Usuario</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-person-badge"></i></span>
+                  <input type="text" class="form-control" name="username" [(ngModel)]="nuevoAdmin.username" placeholder="Usuario único" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Contraseña</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="bi bi-key"></i></span>
+                  <input type="password" class="form-control" name="password" [(ngModel)]="nuevoAdmin.password" placeholder="********" required>
+                </div>
+              </div>
+
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm" [disabled]="isLoading">
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  <i *ngIf="!isLoading" class="bi bi-save2 me-2"></i>
+                  {{ isLoading ? 'Registrando...' : 'Registrar Administrador' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
     <div *ngSwitchCase="'broadcast'">
-      <h3>Enviar Mensaje Global</h3>
-      <div style="display: flex; flex-direction: column; max-width: 500px; gap: 10px;">
-        <input type="text" [(ngModel)]="broadcast.asunto" placeholder="Asunto del mensaje">
-        <textarea [(ngModel)]="broadcast.cuerpo" rows="6" placeholder="Escribe el mensaje aquí..."></textarea>
-        <button (click)="onSendBroadcast()" [disabled]="isLoading">Enviar Broadcast</button>
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white py-3">
+          <h5 class="mb-0 fw-bold"><i class="bi bi-broadcast me-2"></i>Enviar Mensaje a Todos los Usuarios</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="alert alert-warning d-flex align-items-center mb-4">
+            <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+            <div>
+              <strong>Atención:</strong> Este mensaje será enviado a <b>todos</b> los clientes y trabajadores registrados. Úsalo con responsabilidad.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Asunto del Mensaje</label>
+            <input type="text" class="form-control form-control-lg" [(ngModel)]="broadcast.asunto" placeholder="Ej: Mantenimiento programado">
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold">Cuerpo del Mensaje</label>
+            <textarea class="form-control" [(ngModel)]="broadcast.cuerpo" rows="8" placeholder="Escribe aquí el contenido del comunicado..."></textarea>
+          </div>
+
+          <div class="d-grid">
+            <button class="btn btn-danger btn-lg fw-bold shadow-sm" (click)="onSendBroadcast()" [disabled]="isLoading || !broadcast.asunto || !broadcast.cuerpo">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <i *ngIf="!isLoading" class="bi bi-send-fill me-2"></i>
+              {{ isLoading ? 'Enviando...' : 'Enviar Broadcast' }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
