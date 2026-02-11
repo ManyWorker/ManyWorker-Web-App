@@ -1,70 +1,138 @@
-<div class="bg-dark text-secondary px-4 py-5 text-center mb-5">
-  <div class="py-5">
-    <h1 class="display-5 fw-bold text-white">MannyWorker</h1>
-    <div class="col-lg-6 mx-auto">
-      <p class="fs-5 mb-4 text-light">Encuentra profesionales expertos para tus reparaciones o postúlate para ayudar a otros. La red más grande de trabajadores y clientes.</p>
-      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        
-        <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3 fw-bold" routerLink="/tareas">Publicar Tarea</button>
-        
-        <button type="button" class="btn btn-outline-info btn-lg px-4" routerLink="/tutoriales">Explorar Tutoriales</button>
+<div class="hero-section text-center text-white mb-5 position-relative">
+  <div class="container py-5">
+    <div class="row justify-content-center py-5">
+      <div class="col-lg-8">
+        <h1 class="display-4 fw-bold mb-3 animate-fade-in">Bienvenido a MannyWorker</h1>
+        <p class="lead mb-4 opacity-75">
+          La plataforma donde las reparaciones encuentran a sus expertos. 
+          <br class="d-none d-md-block">Publica tu tarea o monetiza tus habilidades hoy mismo.
+        </p>
+        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+          <button type="button" class="btn btn-light btn-lg px-5 fw-bold shadow-sm" routerLink="/tareas">
+            <i class="bi bi-tools me-2"></i>Publicar Tarea
+          </button>
+          <button type="button" class="btn btn-outline-light btn-lg px-5" routerLink="/tutoriales">
+            <i class="bi bi-book me-2"></i>Ver Tutoriales
+          </button>
+        </div>
       </div>
     </div>
+  </div>
+  <div class="custom-shape-divider-bottom-1680000000">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
   </div>
 </div>
 
 <div class="container">
+  
+  <section class="mb-5 py-4">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-primary">¿Cómo funciona?</h2>
+      <p class="text-muted">Resolver tus problemas nunca fue tan fácil</p>
+    </div>
+    <div class="row g-4 text-center">
+      <div class="col-md-4">
+        <div class="step-card p-4 h-100">
+          <div class="icon-circle bg-primary text-white mb-3 mx-auto">
+            <i class="bi bi-pencil-square fs-3"></i>
+          </div>
+          <h5>1. Publica tu Tarea</h5>
+          <p class="text-muted small">Describe qué necesitas reparar o mejorar. Es gratis y rápido.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-card p-4 h-100">
+          <div class="icon-circle bg-success text-white mb-3 mx-auto">
+            <i class="bi bi-people-fill fs-3"></i>
+          </div>
+          <h5>2. Recibe Ofertas</h5>
+          <p class="text-muted small">Los trabajadores expertos verán tu solicitud y te enviarán sus presupuestos.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-card p-4 h-100">
+          <div class="icon-circle bg-info text-white mb-3 mx-auto">
+            <i class="bi bi-check-circle-fill fs-3"></i>
+          </div>
+          <h5>3. ¡Listo!</h5>
+          <p class="text-muted small">Elige al mejor candidato, coordina y disfruta del trabajo bien hecho.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="my-5 opacity-25">
+
   <section class="mb-5">
-    <div class="d-flex align-items-center mb-4">
-      <h2 class="h3 mb-0">Categorías Principales</h2>
-      <div class="flex-grow-1 ms-3 border-bottom"></div>
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h2 class="h3 fw-bold mb-1">Categorías Populares</h2>
+        <p class="text-muted mb-0">Encuentra especialistas por sector</p>
+      </div>
     </div>
     
     <div class="row g-4">
-      <div *ngFor="let cat of categories" class="col-md-4 col-lg-2">
-        <div class="card h-100 text-center border-0 shadow-sm category-card">
-          <div class="card-body">
-            <div class="icon-box mb-3 mx-auto bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-              <i class="bi {{cat.icon}} text-primary fs-3"></i>
+      <div *ngFor="let cat of categories" class="col-6 col-md-4 col-lg-2">
+        <div class="card h-100 text-center border-0 shadow-sm category-card" style="cursor: pointer;">
+          <div class="card-body d-flex flex-column align-items-center justify-content-center">
+            <div class="icon-box mb-3 bg-light rounded-circle d-flex align-items-center justify-content-center text-primary transition-icon">
+              <i class="bi {{cat.icon}} fs-3"></i>
             </div>
-            <h6 class="card-title fw-bold">{{cat.title}}</h6>
+            <h6 class="card-title fw-bold text-dark">{{cat.title}}</h6>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="mb-5">
-    <h3 class="mb-4">Tutoriales Destacados</h3>
-    <div class="row">
-      <div *ngFor="let tutorial of featuredTutorials" class="col-md-6 mb-4">
-        <div class="card h-100 overflow-hidden shadow-sm">
-          <div class="row g-0">
-            <div class="col-md-4 bg-secondary d-flex align-items-center justify-content-center text-white">
-               <i class="bi bi-play-circle fs-1"></i>
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">{{tutorial.title}}</h5>
-                <p class="card-text text-muted small">{{tutorial.summary}}</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <span class="badge bg-light text-dark">Por: {{tutorial.author}}</span>
-                  <small class="text-muted">{{tutorial.date | date:'dd/MM/yyyy'}}</small>
+  <section class="mb-5 bg-light p-4 rounded-4 shadow-sm">
+    <div class="d-flex align-items-center mb-4">
+      <h3 class="mb-0 fw-bold"><i class="bi bi-youtube text-danger me-2"></i>Aprende con Tutoriales</h3>
+    </div>
+    
+    <div class="row g-4">
+      <div *ngFor="let tutorial of featuredTutorials" class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-hover tutorial-card">
+          <div class="bg-dark text-white d-flex align-items-center justify-content-center position-relative" style="height: 180px;">
+             <i class="bi bi-play-circle-fill fs-1 opacity-75"></i>
+             <span class="position-absolute bottom-0 end-0 badge bg-dark m-2">{{tutorial.duration}}</span>
+          </div>
+          
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold text-truncate">{{tutorial.title}}</h5>
+            <p class="card-text text-muted small flex-grow-1">{{tutorial.summary | slice:0:80}}...</p>
+            
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center small me-2" style="width: 30px; height: 30px;">
+                  {{tutorial.author.charAt(0)}}
                 </div>
+                <small class="text-dark fw-bold">{{tutorial.author}}</small>
               </div>
+              <small class="text-muted">{{tutorial.date | date:'dd MMM'}}</small>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+    <div class="text-center mt-4">
+        <button class="btn btn-outline-dark rounded-pill px-4" routerLink="/tutoriales">Ver biblioteca completa</button>
+    </div>
   </section>
 
-  <footer class="py-5 my-5 border-top text-center">
-    <p class="text-muted">© 2026 MannyWorker. Todos los datos se transfieren mediante protocolos seguros (HTTPS).</p>
-    <ul class="nav justify-content-center">
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Términos y Condiciones</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">GDPR</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Contacto</a></li>
-    </ul>
-  </footer>
+  <section class="py-5">
+      <div class="bg-primary text-white rounded-4 p-5 text-center position-relative overflow-hidden">
+          <div class="position-relative z-1">
+              <h2 class="fw-bold display-6">¿Eres un profesional?</h2>
+              <p class="fs-5 mb-4 opacity-90">Únete a nuestra red de MannyWorkers y empieza a recibir ofertas de trabajo en tu zona.</p>
+              <button class="btn btn-light text-primary fw-bold btn-lg shadow" routerLink="/register">Registrarme como Trabajador</button>
+          </div>
+          <i class="bi bi-briefcase-fill position-absolute text-white opacity-10" style="font-size: 15rem; top: -50px; right: -50px; transform: rotate(-15deg);"></i>
+      </div>
+  </section>
+
 </div>
+

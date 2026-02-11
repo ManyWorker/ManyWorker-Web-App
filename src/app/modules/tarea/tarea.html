@@ -24,7 +24,7 @@
         <div class="col-md-3 mb-3">
           <label class="form-label">Categoría</label>
           <select class="form-select" [(ngModel)]="nuevaTarea.categoria" name="categoria" required>
-            <option [ngValue]="undefined" disabled selected>Selecciona una...</option>
+            <option [ngValue]="null" disabled selected>Selecciona una...</option>
             <option *ngFor="let cat of categorias" [ngValue]="cat">
               {{ cat.titulo }}
             </option>
@@ -48,33 +48,52 @@
   <hr>
 
   <h3>Tareas Disponibles</h3>
+  
+  <div *ngIf="!tareas || tareas.length === 0" class="alert alert-warning">
+    No tienes tareas publicadas actualmente.
+  </div>
+
   <div class="row">
     <div class="col-md-6 mb-3" *ngFor="let tarea of tareas">
       <div class="card h-100">
+        
         <div class="card-header d-flex justify-content-between align-items-center">
-          <span class="badge bg-primary">{{ tarea.categoria?.titulo || 'Sin Categoría' }}</span>
-          <small class="text-muted">{{ tarea.fechaPublicacion }}</small>
+          <span class="badge bg-primary">
+            {{ (tarea.categoria && tarea.categoria.titulo) || 'Sin Categoría' }}
+          </span>
+          <small class="text-muted">{{ tarea.fechaPublicacion | date:'dd/MM/yyyy' }}</small>
         </div>
+
         <div class="card-body">
           <h5 class="card-title">Presupuesto: {{ tarea.precioMax }}€</h5>
           <p class="card-text">{{ tarea.descripcion }}</p>
           <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ tarea.direccion }}</p>
           
-          <div *ngIf="tarea.solicitudes && tarea.solicitudes.length > 0" class="alert alert-info mt-2">
+          <div *ngIf="tarea.solicitudes && tarea.solicitudes.length > 0" class="alert alert-light border mt-3">
             <strong>Solicitudes recibidas:</strong> {{ tarea.solicitudes.length }}
-            <ul>
-               <li *ngFor="let sol of tarea.solicitudes">
-                 Solicitud ID: {{ sol.id }} - {{ sol.aceptado ? 'Aceptada' : 'Pendiente' }}
+            <ul class="list-group mt-2">
+               <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let sol of tarea.solicitudes">
+                 <small>Solicitud #{{ sol.id }}</small>
+                 
+                 <span class="badge" 
+                       [ngClass]="{
+                         'bg-warning text-dark': sol.estado === 'PENDIENTE',
+                         'bg-success': sol.estado === 'ACEPTADO',
+                         'bg-danger': sol.estado === 'RECHAZADO'
+                       }">
+                   {{ sol.estado }}
+                 </span>
                </li>
             </ul>
           </div>
-          <div *ngIf="!tarea.solicitudes || tarea.solicitudes.length === 0" class="text-muted small">
-             No hay solicitudes aún.
+
+          <div *ngIf="!tarea.solicitudes || tarea.solicitudes.length === 0" class="text-muted small mt-3">
+             <i class="bi bi-info-circle"></i> No hay solicitudes aún.
           </div>
 
         </div>
         <div class="card-footer">
-            <button class="btn btn-danger btn-sm" (click)="eliminarTarea(tarea.id)">Eliminar</button>
+            <button class="btn btn-danger btn-sm w-100" (click)="eliminarTarea(tarea.id)">Eliminar Tarea</button>
         </div>
       </div>
     </div>

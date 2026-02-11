@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <div *ngIf="!loading && solicitudesRecibidas?.length === 0 && !mensajeError" class="alert alert-info shadow-sm text-center py-4">
+  <div *ngIf="!loading && solicitudesRecibidas.length === 0 && !mensajeError" class="alert alert-info shadow-sm text-center py-4">
     <i class="bi bi-clock-history fs-3 d-block mb-2"></i>
     Aún no hay ningún trabajador que haya enviado una solicitud para esta tarea.
   </div>
@@ -64,7 +64,7 @@
         <div class="card-body">
           <h5 class="card-title fw-bold">
             <i class="bi bi-person-badge text-primary me-2"></i>
-            {{'Trabajador #' + solicitud.trabajador?.id }}
+            {{ 'Trabajador #' + (solicitud.trabajador && solicitud.trabajador.id) }}
           </h5>
           
           <div class="alert alert-light mt-3 py-2 border">

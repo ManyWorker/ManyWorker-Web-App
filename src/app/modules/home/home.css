@@ -1,27 +1,79 @@
+/* Hero con degradado moderno */
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+    padding-top: 4rem;
+    padding-bottom: 6rem;
+}
+
+/* Forma ondulada SVG al pie del hero */
+.custom-shape-divider-bottom-1680000000 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.custom-shape-divider-bottom-1680000000 svg {
+    position: relative;
+    display: block;
+    width: calc(130% + 1.3px);
+    height: 60px;
+    fill: #FFFFFF;
+}
+
+/* Tarjetas de categorías con efecto hover */
 .category-card {
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
-  background: #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .category-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-  background-color: #e7f1ff;
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
 
 .icon-box {
-  transition: background 0.3s;
+    width: 70px; 
+    height: 70px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .category-card:hover .icon-box {
-  background-color: #0d6efd !important;
+    background-color: #0d6efd !important;
+    color: white !important;
 }
 
-.category-card:hover .bi {
-  color: white !important;
+.category-card:hover .icon-box i {
+    color: white !important; /* Fuerza el icono a blanco en hover */
 }
 
-.bg-dark {
-  background: linear-gradient(45deg, #212529 0%, #343a40 100%);
+/* Iconos de "Cómo funciona" */
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tarjetas de tutoriales */
+.shadow-hover {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.shadow-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* Footer links hover */
+.hover-link:hover {
+    text-decoration: underline;
+    color: #0dcaf0 !important;
+}
+
+.pointer {
+    cursor: pointer;
 }
