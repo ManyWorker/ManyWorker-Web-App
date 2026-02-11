@@ -6,67 +6,148 @@
 
   <ul class="nav nav-tabs mb-4">
     <li class="nav-item">
-      <button class="nav-link" [class.active]="activeTab === 'catalogo'" (click)="activeTab = 'catalogo'">
+      <button class="nav-link" [class.active]="activeTab === 'catalogo'" (click)="onTabChange('catalogo')">
         🌐 Catálogo de Tareas
       </button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" [class.active]="activeTab === 'mis-solicitudes'" (click)="activeTab = 'mis-solicitudes'">
+      <button class="nav-link" [class.active]="activeTab === 'mis-solicitudes'" (click)="onTabChange('mis-solicitudes')">
         📝 Mis Postulaciones
       </button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" [class.active]="activeTab === 'tutoriales'" (click)="activeTab = 'tutoriales'">
+      <button class="nav-link" [class.active]="activeTab === 'tutoriales'" (click)="onTabChange('tutoriales')">
         📚 Mis Tutoriales
       </button>
     </li>
   </ul>
 
-  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
+    {{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage=''"></button>
+  </div>
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show">
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="successMessage=''"></button>
+  </div>
 
-  <div *ngIf="isLoading" class="text-center my-5">
+  <div *ngIf="isLoading && activeTab === 'catalogo'" class="text-center my-5">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Cargando...</span>
     </div>
   </div>
 
-  <div [ngSwitch]="activeTab" *ngIf="!isLoading">
+  <div [ngSwitch]="activeTab">
 
-    <div *ngSwitchCase="'catalogo'">
-      <div class="row">
-        <div class="col-12" *ngFor="let c of clientesConTareas">
-          <div *ngFor="let t of c.tareas">
-            <div class="card mb-3 shadow-sm border-start border-primary border-4">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="card-title mb-1">{{ t.descripcion }}</h5>
+    <!-- CATÁLOGO DE TAREAS -->
+    <div *ngSwitchCase="'catalogo'" >
+      <div *ngIf="!isLoading">
+        <div class="row">
+          <div class="col-12" *ngFor="let c of clientesConTareas">
+            <div *ngFor="let t of c.tareas">
+              <div class="card mb-3 shadow-sm border-start border-primary border-4">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                  <div>
+                    <h5 class="card-title mb-1">{{ t.descripcion }}</h5>
                     <p class="card-text mb-0 text-muted">Presupuesto máx: {{ t.precioMax }}€</p>
-                  <small class="text-primary">Publicado por: {{ c.nombre }} {{ c.apellido }}</small>
+                    <small class="text-primary">Publicado por: {{ c.nombre }} {{ c.apellido }}</small>
+                  </div>
+                  <button class="btn btn-success" (click)="enviarSolicitud(t.id!)">
+                    Postularme
+                  </button>
                 </div>
-                <button class="btn btn-success" (click)="enviarSolicitud(t.id!)">
-                  Postularme
+              </div>
+            </div>
+          </div>
+          <div *ngIf="clientesConTareas.length === 0" class="text-center p-5">
+            <p class="text-muted">No hay tareas disponibles en el catálogo en este momento.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIS SOLICITUDES -->
+    <div *ngSwitchCase="'mis-solicitudes'">
+      <p class="text-muted">Funcionalidad pendiente de implementación en el servidor.</p>
+    </div>
+
+    <!-- MIS TUTORIALES -->
+    <div *ngSwitchCase="'tutoriales'">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Mis Tutoriales</h4>
+        <button class="btn btn-primary btn-sm" (click)="openCreateTutorial()" *ngIf="!showTutorialForm">
+          + Crear Tutorial
+        </button>
+      </div>
+
+      <!-- Spinner tutoriales -->
+      <div *ngIf="isLoadingTutoriales" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+
+      <!-- FORMULARIO CREAR/EDITAR TUTORIAL -->
+      <div *ngIf="showTutorialForm" class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h5 class="card-title">{{ editingTutorialId ? 'Editar Tutorial' : 'Nuevo Tutorial' }}</h5>
+          
+          <div class="mb-3">
+            <label class="form-label">Título *</label>
+            <input type="text" class="form-control" [(ngModel)]="tutorialForm.titulo" placeholder="Ej: Cómo reparar una tubería">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Resumen *</label>
+            <textarea class="form-control" [(ngModel)]="tutorialForm.resumen" rows="2" placeholder="Breve descripción del tutorial"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Texto del Tutorial *</label>
+            <textarea class="form-control" [(ngModel)]="tutorialForm.texto" rows="8" placeholder="Escribe el contenido completo del tutorial aquí..."></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Imágenes (URLs separadas por comas)</label>
+            <input type="text" class="form-control" [(ngModel)]="tutorialForm.imagenes" placeholder="https://ejemplo.com/img1.jpg, https://ejemplo.com/img2.png">
+            <div class="form-text">Opcional. Las URLs deben terminar en .jpg, .jpeg, .png o .gif</div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-end">
+            <button class="btn btn-secondary" (click)="cancelTutorialForm()">Cancelar</button>
+            <button class="btn btn-success" (click)="saveTutorial()" [disabled]="isLoadingTutoriales">
+              {{ editingTutorialId ? 'Guardar Cambios' : 'Crear Tutorial' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISTADO DE TUTORIALES -->
+      <div *ngIf="!isLoadingTutoriales && !showTutorialForm">
+        <div *ngIf="misTutoriales.length === 0" class="text-center p-5">
+          <p class="text-muted">No tienes tutoriales publicados aún. ¡Crea tu primer tutorial!</p>
+        </div>
+
+        <div *ngFor="let tut of misTutoriales" class="card mb-3 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="card-title text-primary">{{ tut.titulo }}</h5>
+                <p class="card-text text-muted mb-1">{{ tut.resumen }}</p>
+                <small class="text-muted" *ngIf="tut.fechaActualizacion">
+                  Actualizado: {{ tut.fechaActualizacion | date:'medium' }}
+                </small>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm" (click)="openEditTutorial(tut)">
+                  <i class="bi bi-pencil"></i> Editar
+                </button>
+                <button class="btn btn-outline-danger btn-sm" (click)="deleteTutorial(tut.id)">
+                  <i class="bi bi-trash"></i> Eliminar
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <div *ngIf="clientesConTareas.length === 0" class="text-center p-5">
-          <p class="text-muted">No hay tareas disponibles en el catálogo en este momento.</p>
-        </div>
       </div>
-    </div>
-
-    <div *ngSwitchCase="'mis-solicitudes'">
-      <p class="text-muted">Funcionalidad pendiente de implementación en el servidor.</p>
-    </div>
-
-    <div *ngSwitchCase="'tutoriales'">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Mis Tutoriales</h4>
-        <button class="btn btn-primary btn-sm">+ Crear Tutorial</button>
-      </div>
-      <p class="text-muted small">Listado de tus guías de reparación publicadas.</p>
     </div>
 
   </div>
