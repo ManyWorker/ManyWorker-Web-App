@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Categoria } from '../../model/Categoria';
-import { CategoriaService } from '../../app/services/CategoriaService';
+import { CategoriaService } from '../../app/services/categoria.service';
 
 @Component({
   selector: 'app-categoria-list',
@@ -17,7 +17,7 @@ export class CategoriaListComponent implements OnInit {
   }
 
   cargarCategorias(): void {
-    this.categoriaService.getAll().subscribe({
+    this.categoriaService.listar().subscribe({
       next: (data) => {
         this.categorias = data;
       },

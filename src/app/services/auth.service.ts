@@ -45,24 +45,35 @@ export class AuthService {
   logout(): void {
     // Borramos el token JWT
     sessionStorage.removeItem('token');
-    
+
     // Borramos los datos del usuario (id, nombre, rol)
     sessionStorage.removeItem('usuario');
-    
+
     // Opcional: Si quieres asegurarte de borrar TODO lo de la sesión:
-    // sessionStorage.clear(); 
+    sessionStorage.clear();
   }
 
   hasRole(role: string): boolean {
-  const userString = sessionStorage.getItem('usuario');
-  if (!userString) return false;
-  
-  try {
-    const user = JSON.parse(userString);
-    // Compara el rol guardado (asegúrate que en el login guardaste "CLIENTE", "ADMINISTRADOR", etc.)
-    return user.rol === role;
-  } catch (e) {
-    return false;
+    const userString = sessionStorage.getItem('usuario');
+    if (!userString) return false;
+
+    try {
+      const user = JSON.parse(userString);
+      // Compara el rol guardado (asegúrate que en el login guardaste "CLIENTE", "ADMINISTRADOR", etc.)
+      return user.rol === role;
+    } catch (e) {
+      return false;
+    }
   }
-}
+  getUserId(): number | null {
+    const userString = sessionStorage.getItem('usuario');
+    if (!userString) return null;
+    try {
+      const user = JSON.parse(userString);
+      return user.id; // Retorna el ID numérico guardado
+    } catch (e) {
+      console.error('Error al leer el ID del usuario', e);
+      return null;
+    }
+  }
 }

@@ -1,0 +1,12 @@
+.hover-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.card-title {
+    min-height: 2.5rem; /* Alinea los títulos si tienen diferente longitud */
+}

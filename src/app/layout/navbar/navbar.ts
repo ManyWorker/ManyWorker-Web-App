@@ -28,6 +28,17 @@ export class Navbar {
   get isCliente(): boolean {
     return this.authService.hasRole('CLIENTE');
   }
+
+  // Getter para saber si es trabajador
+  get isTrabajador(): boolean {
+    return this.authService.hasRole('TRABAJADOR');
+  }
+
+  // Getter para saber si es cliente
+  get isAdmin(): boolean {
+    return this.authService.hasRole('ADMINISTRADOR');
+  }
+
   // Método para cerrar sesión
   logout(): void {
     this.authService.logout(); // Esto borra el sessionStorage (según definimos antes)

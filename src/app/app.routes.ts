@@ -1,10 +1,5 @@
 import { Routes } from '@angular/router';
 
-// Importamos los componentes
-//import { AdminComponent } from './modules/admin/admin';
-//import { ClienteComponent } from './modules/cliente/cliente';
-//import { TrabajadorComponent } from './modules/trabajador/trabajador';
-//import { MensajesComponent } from './modules/mensajes/mensajes';
 import { TutorialComponent } from './modules/tutorial/tutorial';
 
 // Importamos los guards de seguridad
@@ -18,7 +13,9 @@ import { Mensajes } from './modules/mensajes/mensajes';
 import { ClienteComponent } from './modules/cliente/cliente';
 import { AdministradorComponent } from './modules/administrador/administrador';
 import { TrabajadorComponent } from './modules/trabajador/trabajador';
-
+import { MisSolicitudes } from './modules/mis-solicitudes/mis-solicitudes';
+import { TareaComponent } from './modules/tarea/tarea';
+import { CategoriaComponent } from './modules/categoria/categoria';
 
 export const routes: Routes = [
     // Ruta pública: Login
@@ -47,9 +44,17 @@ export const routes: Routes = [
 	{ path: 'tareas-disponibles', component: TrabajadorComponent },
 	{ path: 'administrador', component: AdministradorComponent },
 
+	{ path: 'mis-solicitudes', component: MisSolicitudes },
+
+
 
 
 	
 
+	// Ruta para gestión de Tareas
+    { path: 'tareas', component: TareaComponent },
+
+	{ path: 'categorias', component: CategoriaComponent },
+  	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 
 ];
