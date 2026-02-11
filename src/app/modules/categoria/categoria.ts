@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoriaService } from '../../services/categoria.service';
@@ -15,7 +15,7 @@ export class CategoriaComponent implements OnInit {
   categorias: Categoria[] = [];
   nuevaCategoria: Categoria = { titulo: '', leyesAplicables: '' };
 
-  constructor(private categoriaService: CategoriaService) {}
+  constructor(private categoriaService: CategoriaService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.cargarCategorias();
@@ -23,6 +23,7 @@ export class CategoriaComponent implements OnInit {
 
   cargarCategorias() {
     this.categoriaService.listar().subscribe(data => this.categorias = data);
+    this.cdr.detectChanges();
   }
 
   guardar() {
