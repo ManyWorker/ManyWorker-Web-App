@@ -23,7 +23,7 @@
         </li>
 
         <ng-container *ngIf="isLoggedIn">
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="isAdmin">
             <a class="nav-link" routerLink="/categorias" routerLinkActive="active">Categorías</a>
           </li>
 

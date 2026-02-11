@@ -40,7 +40,6 @@ export class AdministradorComponent implements OnInit {
     const userString = sessionStorage.getItem('usuario');
     if (userString) {
       this.currentUser = JSON.parse(userString);
-      this.loadCategorias(); // 3. Corregido: se llamaba loadCatalogo
     } else {
       this.router.navigate(['/login']);
     }
@@ -51,24 +50,9 @@ export class AdministradorComponent implements OnInit {
     this.activeTab = tab;
     this.successMsg = '';
     this.errorMsg = '';
-    if (tab === 'categorias') this.loadCategorias();
+
   }
 
-  loadCategorias(): void {
-    this.isLoading = true;
-    this.adminService.getCategorias().subscribe({
-      next: (data) => {
-        this.categorias = data || [];
-        this.isLoading = false;
-        this.cd.detectChanges();
-      },
-      error: () => {
-        this.errorMsg = 'Error al cargar las categorías.';
-        this.isLoading = false;
-        this.cd.detectChanges();
-      }
-    });
-  }
 
   onRegisterAdmin(): void {
     this.isLoading = true;
@@ -97,16 +81,6 @@ export class AdministradorComponent implements OnInit {
       return;
     }
 
-    this.adminService.deleteCategoria(cat.id).subscribe({
-      next: () => {
-        this.successMsg = 'Categoría eliminada.';
-        this.loadCategorias();
-      },
-      error: (err) => {
-        this.errorMsg = err.error?.message || 'Error al eliminar. Puede que tenga tareas asociadas.';
-        this.cd.detectChanges();
-      }
-    });
   }
 
   onSendBroadcast(): void {

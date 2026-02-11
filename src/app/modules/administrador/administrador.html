@@ -2,7 +2,6 @@
   <h1>Panel de Administración</h1>
 
   <div style="margin-bottom: 20px;">
-    <button (click)="switchTab('categorias')">Categorías</button>
     <button (click)="switchTab('nuevo-admin')">Nuevo Admin</button>
     <button (click)="switchTab('broadcast')">Broadcast</button>
   </div>
@@ -11,30 +10,6 @@
   <div *ngIf="errorMsg" style="color: red; font-weight: bold; margin-bottom: 10px;">{{ errorMsg }}</div>
 
   <div [ngSwitch]="activeTab">
-
-    <div *ngSwitchCase="'categorias'">
-      <h3>Listado de Categorías</h3>
-      <table border="1" style="width: 100%; border-collapse: collapse;">
-        <thead>
-          <tr style="background-color: #eee;">
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let cat of categorias">
-            <td>{{ cat.id }}</td>
-            <td>{{ cat.titulo }}</td>
-            <td>
-              <button (click)="onDeleteCategoria(cat)">
-                Eliminar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
     <div *ngSwitchCase="'nuevo-admin'">
       <h3>Crear Nuevo Administrador</h3>
