@@ -52,8 +52,19 @@ export class CategoriaComponent implements OnInit {
   borrar(id?: number) {
     if (id && confirm('¿Seguro que quieres eliminar esta categoría?')) {
       this.categoriaService.eliminarCategoria(id).subscribe({
-        next: () => this.cargarCategorias(),
-        error: (err) => console.error('Error al borrar:', err)
+        next: () => {
+          this.cargarCategorias();
+        },
+        error: (err) => {
+          // Si el status es 200 OK, es que el backend borró bien pero mandó texto
+          if (err.status === 200) {
+            console.log('Categoría eliminada con éxito (aunque el backend respondió con texto)');
+            this.cargarCategorias();
+          } else {
+            console.error('Error real al borrar categoría:', err);
+            alert('No se pudo eliminar la categoría. Revisa si tiene tareas asociadas.');
+          }
+        }
       });
     }
   }
