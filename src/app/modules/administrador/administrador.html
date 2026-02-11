@@ -1,0 +1,72 @@
+<div style="padding: 20px; font-family: Arial, sans-serif;">
+  <h1>Panel de Administración</h1>
+
+  <div style="margin-bottom: 20px;">
+    <button (click)="switchTab('categorias')">Categorías</button>
+    <button (click)="switchTab('nuevo-admin')">Nuevo Admin</button>
+    <button (click)="switchTab('broadcast')">Broadcast</button>
+  </div>
+
+  <div *ngIf="successMsg" style="color: green; font-weight: bold; margin-bottom: 10px;">{{ successMsg }}</div>
+  <div *ngIf="errorMsg" style="color: red; font-weight: bold; margin-bottom: 10px;">{{ errorMsg }}</div>
+
+  <div [ngSwitch]="activeTab">
+
+    <div *ngSwitchCase="'categorias'">
+      <h3>Listado de Categorías</h3>
+      <table border="1" style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background-color: #eee;">
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Tareas</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cat of categorias">
+            <td>{{ cat.id }}</td>
+            <td>{{ cat.titulo }}</td>
+            <td>{{ cat.tareas ? cat.tareas.length : 0 }}</td>
+            <td>
+              <button (click)="onDeleteCategoria(cat)" [disabled]="cat.tareas && cat.tareas.length > 0">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngSwitchCase="'nuevo-admin'">
+      <h3>Crear Nuevo Administrador</h3>
+      <form (ngSubmit)="onRegisterAdmin()" style="display: flex; flex-direction: column; max-width: 400px; gap: 10px;">
+        
+        <input type="text" name="nombre" [(ngModel)]="nuevoAdmin.nombre" placeholder="Nombre" required>
+        <input type="text" name="apellido" [(ngModel)]="nuevoAdmin.apellido" placeholder="Primer Apellido" required>
+        <input type="text" name="apellido2" [(ngModel)]="nuevoAdmin.apellido2" placeholder="Segundo Apellido">
+        <input type="email" name="correo" [(ngModel)]="nuevoAdmin.correo" placeholder="Email" required>
+        <input type="text" name="telefono" [(ngModel)]="nuevoAdmin.telefono" placeholder="Teléfono">
+        <input type="text" name="direccion" [(ngModel)]="nuevoAdmin.direccion" placeholder="Dirección">
+
+        <hr>
+        <input type="text" name="username" [(ngModel)]="nuevoAdmin.username" placeholder="Username" required>
+        <input type="password" name="password" [(ngModel)]="nuevoAdmin.password" placeholder="Password" required>
+
+        <button type="submit" [disabled]="isLoading" style="margin-top: 20px; padding: 10px;">
+          {{ isLoading ? 'Guardando...' : 'Registrar Administrador' }}
+        </button>
+      </form>
+    </div>
+
+    <div *ngSwitchCase="'broadcast'">
+      <h3>Enviar Mensaje Global</h3>
+      <div style="display: flex; flex-direction: column; max-width: 500px; gap: 10px;">
+        <input type="text" [(ngModel)]="broadcast.asunto" placeholder="Asunto del mensaje">
+        <textarea [(ngModel)]="broadcast.cuerpo" rows="6" placeholder="Escribe el mensaje aquí..."></textarea>
+        <button (click)="onSendBroadcast()" [disabled]="isLoading">Enviar Broadcast</button>
+      </div>
+    </div>
+
+  </div>
+</div>
