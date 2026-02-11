@@ -17,6 +17,7 @@ import { MisSolicitudes } from './modules/mis-solicitudes/mis-solicitudes';
 import { TareaComponent } from './modules/tarea/tarea';
 import { CategoriaComponent } from './modules/categoria/categoria';
 import { Error404Component } from './modules/error404/error404';
+import { GestionarSolicitudes } from './modules/gestionar-solicitudes/gestionar-solicitudes';
 
 export const routes: Routes = [
     // Rutas públicas
@@ -36,6 +37,7 @@ export const routes: Routes = [
     { path: 'tareas-disponibles', component: TrabajadorComponent },
     { path: 'administrador', component: AdministradorComponent },
     { path: 'mis-solicitudes', component: MisSolicitudes },
+	{ path: 'gestionar-solicitudes/:id', component: GestionarSolicitudes },
 
     // Gestión de Tareas y Categorías
     { path: 'tareas', component: TareaComponent },

@@ -15,7 +15,7 @@ export class TareaService {
     return this.http.get<Tarea[]>(this.url);
   }
 
-  getById(id: number): Observable<Tarea> {
+  getById(id: string): Observable<Tarea> {
     return this.http.get<Tarea>(`${this.url}/${id}`);
   }
 

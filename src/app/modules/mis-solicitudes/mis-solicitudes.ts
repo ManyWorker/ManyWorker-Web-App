@@ -172,7 +172,7 @@ export class MisSolicitudes implements OnInit {
         
         alert('Solicitud cancelada correctamente'); 
         
-        this.solicitudACancelar = null; 
+        this.solicitudACancelar = null; // Limpiamos la variable
         this.cargarMisSolicitudes(); 
         this.cargarTareas(); 
       },

@@ -1,0 +1,101 @@
+<div class="container mt-5 mb-5">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark">
+      <i class="bi bi-inboxes-fill text-primary me-2"></i>Gestionar Candidatos
+    </h2>
+    <button class="btn btn-outline-secondary shadow-sm" routerLink="/mis-solicitudes">
+      <i class="bi bi-arrow-left me-1"></i> Volver al tablón
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 text-muted">Cargando información de la tarea...</p>
+  </div>
+
+  <div *ngIf="mensajeError" class="alert alert-danger shadow-sm text-center">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ mensajeError }}
+  </div>
+
+  <div class="card shadow-sm border-0 bg-light mb-5" *ngIf="!loading && tareaSeleccionada">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <span class="badge bg-secondary mb-2">Referencia: {{ tareaIdOriginal }}</span>
+          <h4 class="fw-bold text-dark">{{ tareaSeleccionada.descripcion }}</h4>
+          <p class="text-muted mb-0"><i class="bi bi-geo-alt-fill text-danger me-1"></i> {{ tareaSeleccionada.direccion || 'Sin ubicación específica' }}</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <div class="text-muted small text-uppercase fw-bold">Presupuesto Máximo</div>
+          <h2 class="text-success fw-bold mb-0">{{ tareaSeleccionada.precioMax }} €</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && solicitudesRecibidas?.length === 0 && !mensajeError" class="alert alert-info shadow-sm text-center py-4">
+    <i class="bi bi-clock-history fs-3 d-block mb-2"></i>
+    Aún no hay ningún trabajador que haya enviado una solicitud para esta tarea.
+  </div>
+
+  <div class="row" *ngIf="!loading && solicitudesRecibidas.length > 0">
+    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let solicitud of solicitudesRecibidas">
+      
+      <div class="card h-100 shadow-sm border-0" 
+           [ngClass]="{
+             'border-success border-2': solicitud.estado === 'ACEPTADO',
+             'opacity-50': solicitud.estado === 'RECHAZADO'
+           }">
+        
+        <div class="card-header bg-white pt-3 pb-0 border-0 d-flex justify-content-between">
+          <span class="text-muted small"><i class="bi bi-calendar-event me-1"></i>{{ solicitud.fechaRegistro | date:'dd/MM/yyyy' }}</span>
+          
+          <span class="badge rounded-pill" 
+                [ngClass]="{
+                  'bg-warning text-dark': solicitud.estado === 'PENDIENTE',
+                  'bg-success': solicitud.estado === 'ACEPTADO',
+                  'bg-danger': solicitud.estado === 'RECHAZADO'
+                }">
+            {{ solicitud.estado }}
+          </span>
+        </div>
+
+        <div class="card-body">
+          <h5 class="card-title fw-bold">
+            <i class="bi bi-person-badge text-primary me-2"></i>
+            {{'Trabajador #' + solicitud.trabajador?.id }}
+          </h5>
+          
+          <div class="alert alert-light mt-3 py-2 border">
+            <div class="text-muted small text-uppercase fw-bold mb-1">Precio Ofertado</div>
+            <h3 class="text-success fw-bold mb-0">{{ solicitud.precioOfrecido }} €</h3>
+          </div>
+
+          <p class="card-text text-secondary mt-3 fst-italic">
+            <i class="bi bi-quote fs-4 text-muted opacity-50"></i>{{ solicitud.comentario }}
+          </p>
+        </div>
+
+        <div class="card-footer bg-white border-top-0 pb-3 pt-0" *ngIf="solicitud.estado === 'PENDIENTE'">
+          <div class="d-flex gap-2">
+            <button class="btn btn-success w-100 fw-bold shadow-sm" (click)="aceptarSolicitud(solicitud.id)">
+              <i class="bi bi-check-lg me-1"></i> Aceptar
+            </button>
+            <button class="btn btn-outline-danger w-100 fw-bold shadow-sm" (click)="rechazarSolicitud(solicitud.id)">
+              <i class="bi bi-x-lg me-1"></i> Rechazar
+            </button>
+          </div>
+        </div>
+        
+        <div class="card-footer bg-white border-top-0 text-center pb-3 pt-0" *ngIf="solicitud.estado !== 'PENDIENTE'">
+          <span class="text-muted small">
+            <i class="bi bi-info-circle me-1"></i> Esta solicitud ya ha sido {{ solicitud.estado | lowercase }}.
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

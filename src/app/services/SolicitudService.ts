@@ -50,4 +50,7 @@ export class SolicitudService {
   getMisSolicitudes(): Observable<Solicitud[]> {
     return this.http.get<Solicitud[]>(`${this.url}/trabajador`, { headers: this.getHeaders() });   
   }
+  getSolicitudesByTarea(tareaId: string): Observable<Solicitud[]> {
+    return this.http.get<Solicitud[]>(`${this.url}/tarea/${tareaId}`, { headers: this.getHeaders() });
+  }
 }
