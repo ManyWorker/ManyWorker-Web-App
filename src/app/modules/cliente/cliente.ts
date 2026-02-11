@@ -26,7 +26,7 @@ export class ClienteComponent implements OnInit {
   categorias: Categoria[] = [];
 
   nuevaTarea: Tarea = {
-    id: 0, descripcion: '', precioMax: 0, direccion: '', solicitudes: []
+    id: 0, descripcion: '', precioMax: null, direccion: '', solicitudes: []
   } as any;
 
   activeTab: 'mis-tareas' | 'solicitudes' = 'mis-tareas';
@@ -40,7 +40,7 @@ export class ClienteComponent implements OnInit {
     private tareaService: TareaService,
     private categoriaService: CategoriaService,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef // <--- Inyectado
   ) {}
 
   ngOnInit(): void {
@@ -55,74 +55,64 @@ export class ClienteComponent implements OnInit {
   }
 
   loadData(): void {
+    this.isLoading = true;
     this.clienteService.getById(this.currentUser.id).subscribe({
       next: (data) => {
         this.cliente = data;
         if (!this.cliente.tareas) this.cliente.tareas = [];
         this.isLoading = false;
-        this.cd.detectChanges();
+        // Forzamos a Angular a pintar la lista recibida
+        this.cd.detectChanges(); 
       },
       error: (e) => {
         console.error('Error:', e);
         this.isLoading = false;
+        this.cd.detectChanges();
       }
     });
   }
 
   cargarCategorias(): void {
     this.categoriaService.listar().subscribe({
-      next: (data: any) => this.categorias = data,
+      next: (data: any) => {
+        this.categorias = data;
+        this.cd.detectChanges();
+      },
       error: (e) => console.error('Error cargando categorías', e)
     });
   }
 
-  // --- ESTA ES LA FUNCIÓN QUE CAMBIA PARA VACIAR EL FORMULARIO ---
   saveTarea(): void {
-    if (!this.nuevaTarea.descripcion) {
-      this.errorMessage = 'La descripción es obligatoria.';
-      return;
-    }
-    if (!this.nuevaTarea.categoria) {
-      this.errorMessage = 'Debes seleccionar una categoría.';
+    if (!this.nuevaTarea.descripcion || !this.nuevaTarea.categoria) {
+      this.errorMessage = 'Descripción y Categoría son obligatorias.';
       return;
     }
     
     this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-
     (this.nuevaTarea as any).contenido = this.nuevaTarea.descripcion;
     (this.nuevaTarea as any).cliente = this.cliente; 
 
     this.tareaService.create(this.nuevaTarea).subscribe({
       next: (tareaCreada) => {
         this.successMessage = 'Tarea publicada correctamente.';
-        this.isLoading = false;
-        
         if (!this.cliente.tareas) this.cliente.tareas = [];
         this.cliente.tareas.push(tareaCreada);
         
-        // AQUÍ ES DONDE SE VACÍAN LOS CAMPOS:
+        // Limpiar formulario
         this.nuevaTarea = {
-            id: 0,
-            descripcion: '',
-            precioMax: null, 
-            direccion: '',
-            solicitudes: [],
-            categoria: undefined 
+            id: 0, descripcion: '', precioMax: null, direccion: '', solicitudes: [], categoria: undefined
         } as any;
         
-        this.cd.detectChanges();
+        this.isLoading = false;
+        this.cd.detectChanges(); // Forzamos a mostrar la nueva tarea y limpiar campos
 
-        // Borrar mensaje de éxito a los 3 seg
         setTimeout(() => {
             this.successMessage = '';
             this.cd.detectChanges();
         }, 3000);
       },
       error: (err) => {
-        console.error(err);
-        this.errorMessage = 'Error al guardar. Revisa la consola.';
+        this.errorMessage = 'Error al guardar.';
         this.isLoading = false;
         this.cd.detectChanges();
       }
@@ -138,22 +128,15 @@ export class ClienteComponent implements OnInit {
         this.isLoading = true;
         this.tareaService.delete(tarea.id).subscribe({
             next: () => {
-                if (this.cliente.tareas) {
-                    this.cliente.tareas.splice(index, 1);
-                }
+                if (this.cliente.tareas) this.cliente.tareas.splice(index, 1);
                 this.isLoading = false;
-                this.cd.detectChanges();
+                this.cd.detectChanges(); // Forzamos a quitar la tarea de la tabla
             },
             error: () => {
                 this.isLoading = false;
-                this.errorMessage = 'Error al borrar.';
                 this.cd.detectChanges();
             }
         });
-    } else {
-        if (this.cliente.tareas) {
-            this.cliente.tareas.splice(index, 1);
-        }
     }
   }
 }
