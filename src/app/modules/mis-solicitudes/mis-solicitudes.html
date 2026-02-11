@@ -4,26 +4,30 @@
     <h2 class="fw-bold text-primary">
       <i class="bi bi-briefcase-fill me-2"></i>Tareas Disponibles
     </h2>
-    <p class="text-muted">Explora las tareas publicadas por los clientes y envía tu solicitud.</p>
+    <p class="text-muted">Explora las tareas publicadas y gestiona las solicitudes.</p>
   </div>
 
-  <div *ngIf="loading" class="text-center py-5">
+  <div *ngIf="loadingTareas" class="text-center py-5">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Cargando...</span>
     </div>
   </div>
 
-  <div *ngIf="!loading && tareasDisponibles.length === 0" class="alert alert-info text-center">
-    No hay tareas disponibles en este momento. ¡Vuelve más tarde!
+  <div *ngIf="mensajeError" class="alert alert-danger text-center shadow-sm">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ mensajeError }}
   </div>
 
-  <div class="row" *ngIf="!loading && tareasDisponibles.length > 0">
+  <div *ngIf="!loadingTareas && tareasDisponibles?.length === 0 && !mensajeError" class="alert alert-info text-center shadow-sm">
+    <i class="bi bi-info-circle-fill me-2"></i>No hay tareas disponibles en este momento. ¡Vuelve más tarde!
+  </div>
+
+  <div class="row" *ngIf="!loadingTareas && tareasDisponibles.length > 0"> 
     <div class="col-md-6 col-lg-4 mb-4" *ngFor="let tarea of tareasDisponibles">
-      
       <div class="card h-100 shadow-sm border-0 hover-card">
+        
         <div class="card-header bg-white border-bottom-0 pt-3">
           <div class="d-flex justify-content-between align-items-center">
-            <span class="badge bg-secondary rounded-pill">
+            <span class="badge bg-secondary rounded-pill px-3 py-2">
               {{ tarea.categoria?.titulo || 'General' }}
             </span>
             <small class="text-muted">{{ tarea.fechaPublicacion | date:'dd/MM/yyyy' }}</small>
@@ -31,7 +35,7 @@
         </div>
 
         <div class="card-body">
-          <h5 class="card-title fw-bold text-dark">{{ tarea.descripcion | slice:0:50 }}...</h5>
+          <h5 class="card-title fw-bold text-dark">{{ tarea.descripcion | slice:0:50 }}<span *ngIf="tarea.descripcion.length > 50">...</span></h5>
           <p class="card-text text-muted small">
             {{ tarea.descripcion }}
           </p>
@@ -41,28 +45,181 @@
           <div class="d-flex flex-column gap-2">
             <div class="d-flex align-items-center text-secondary">
               <i class="bi bi-geo-alt-fill me-2 text-danger"></i>
-              <span>{{ tarea.direccion }}</span>
+              <span>{{ tarea.direccion || 'Sin ubicación específica' }}</span>
             </div>
             
             <div class="d-flex align-items-center text-secondary">
               <i class="bi bi-cash-stack me-2 text-success"></i>
-              <span>Presupuesto Max: <strong>{{ tarea.precioMax }}€</strong></span>
-            </div>
-
-            <div class="d-flex align-items-center text-secondary">
-              <i class="bi bi-calendar-event me-2 text-primary"></i>
-              <span>Fin: {{ tarea.fechaFin | date:'dd/MM/yyyy' }}</span>
+              <span>Presupuesto Max: <strong class="text-dark">{{ tarea.precioMax }}€</strong></span>
             </div>
           </div>
         </div>
 
         <div class="card-footer bg-white border-top-0 pb-3">
           <button 
-            class="btn btn-primary w-100 fw-bold" 
-            (click)="aplicarTarea(tarea)">
-            <i class="bi bi-send-check me-1"></i> Enviar Solicitud
+            *ngIf="authService.hasRole('TRABAJADOR')"
+            class="btn btn-primary w-100 fw-bold shadow-sm" 
+            (click)="abrirModalSolicitud(tarea)">
+            <i class="bi bi-send-check me-2"></i> Enviar Solicitud
+          </button>
+
+          <button 
+            *ngIf="authService.hasRole('CLIENTE')"
+            class="btn btn-success w-100 fw-bold shadow-sm" 
+            [routerLink]="['/gestionar-solicitudes', tarea.id]">
+            <i class="bi bi-gear-fill me-2"></i> Gestionar Solicitudes
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="authService.hasRole('TRABAJADOR')">
+    <hr class="my-5 opacity-25">
+    
+    <div class="text-center mb-4">
+      <h3 class="fw-bold text-dark">
+        <i class="bi bi-clipboard-check me-2 text-success"></i>Mis Solicitudes Enviadas
+      </h3>
+      <p class="text-muted">Revisa el estado de las tareas a las que te has postulado.</p>
+    </div>
+
+    <div *ngIf="loadingSolicitudes" class="text-center py-3">
+      <div class="spinner-border text-success" role="status"></div>
+    </div>
+
+    <div *ngIf="!loadingSolicitudes && misSolicitudesEnviadas?.length === 0" class="alert alert-secondary text-center shadow-sm">
+      Aún no has enviado ninguna solicitud. ¡Busca tareas en el tablón de arriba!
+    </div>
+
+    <div class="table-responsive shadow-sm" *ngIf="!loadingSolicitudes && misSolicitudesEnviadas.length > 0"> 
+      <table class="table table-hover table-bordered bg-white mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Fecha</th>
+            <th>Tarea</th>
+            <th>Tu Oferta</th>
+            <th>Comentario</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let solicitud of misSolicitudesEnviadas">
+            <td>{{ solicitud.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+            <td class="fw-bold">{{ solicitud.tarea?.descripcion | slice:0:30 }}...</td> 
+            <td class="text-primary fw-bold">{{ solicitud.precioOfrecido }}€</td>
+            <td class="text-muted small">{{ solicitud.comentario | slice:0:20 }}...</td>
+            
+            <td class="text-center">
+              <span class="badge rounded-pill px-3 py-2" 
+                    [ngClass]="{
+                      'bg-warning text-dark': solicitud.estado === 'PENDIENTE',
+                      'bg-success': solicitud.estado === 'ACEPTADO',
+                      'bg-danger': solicitud.estado === 'RECHAZADO'
+                    }">
+                <i class="bi" 
+                   [ngClass]="{
+                     'bi-hourglass-split': solicitud.estado === 'PENDIENTE',
+                     'bi-check-circle-fill': solicitud.estado === 'ACEPTADO',
+                     'bi-x-circle-fill': solicitud.estado === 'RECHAZADO'
+                   }"></i>
+                {{ solicitud.estado }}
+              </span>
+            </td>
+            
+            <td class="text-center">
+              <button 
+                *ngIf="solicitud.estado === 'PENDIENTE'" 
+                class="btn btn-sm btn-outline-danger" 
+                (click)="abrirModalCancelar(solicitud.id)">
+                <i class="bi bi-trash-fill me-1"></i> Cancelar
+              </button>
+              <span *ngIf="solicitud.estado !== 'PENDIENTE'" class="text-muted small">
+                Sin acciones
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+</div>
+
+<div class="modal fade" id="modalSolicitud" tabindex="-1" aria-labelledby="modalSolicitudLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalSolicitudLabel">
+          <i class="bi bi-file-earmark-text me-2"></i>Enviar Solicitud
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body" *ngIf="tareaSeleccionada">
+        <p class="text-muted mb-4">Estás a punto de postularte para la tarea: <br> <strong>{{ tareaSeleccionada.descripcion }}</strong></p>
+        
+        <form>
+          <div class="mb-3">
+            <label for="precioInput" class="form-label fw-bold">Precio Ofrecido (€)</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-currency-euro"></i></span>
+              <input type="number" id="precioInput" class="form-control" 
+                     name="precio" [(ngModel)]="precioModal" 
+                     placeholder="Ej: 50" min="1" required>
+            </div>
+            <div class="form-text">Presupuesto máximo del cliente: <strong class="text-danger">{{ tareaSeleccionada.precioMax }}€</strong></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="comentarioInput" class="form-label fw-bold">Comentario / Presentación</label>
+            <textarea id="comentarioInput" class="form-control" rows="3" 
+                      name="comentario" [(ngModel)]="comentarioModal" 
+                      placeholder="Explica por qué eres el indicado para esta tarea (Mínimo 10 caracteres)..." required></textarea>
+            <div class="form-text" [ngClass]="{'text-danger': comentarioModal.length < 10 && comentarioModal.length > 0}">
+              {{ comentarioModal.length }}/10 caracteres mínimos.
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer bg-light border-top-0">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary fw-bold" 
+                (click)="confirmarSolicitudModal()"
+                [disabled]="!precioModal || precioModal <= 0 || comentarioModal.trim().length < 10">
+          <i class="bi bi-send me-1"></i> Confirmar y Enviar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCancelar" tabindex="-1" aria-labelledby="modalCancelarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-danger">
+      
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="modalCancelarLabel">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>Cancelar Solicitud
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body text-center py-4">
+        <i class="bi bi-x-circle text-danger mb-3" style="font-size: 3rem;"></i>
+        <h5 class="fw-bold mb-3">¿Estás completamente seguro?</h5>
+        <p class="text-muted mb-0">Esta acción no se puede deshacer. La solicitud será eliminada de tu lista y volverá a aparecer en el tablón de tareas disponibles si aún no ha sido cubierta.</p>
+      </div>
+
+      <div class="modal-footer bg-light border-top-0 justify-content-center">
+        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">No, mantener</button>
+        <button type="button" class="btn btn-danger px-4 fw-bold" (click)="confirmarCancelacion()">
+          <i class="bi bi-trash-fill me-1"></i> Sí, cancelar solicitud
+        </button>
       </div>
 
     </div>
