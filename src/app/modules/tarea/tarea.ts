@@ -6,6 +6,7 @@ import { Categoria } from '../../../model/Categoria';
 import { TareaService } from '../../services/TareaService';
 import { CategoriaService } from '../../services/categoria.service';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-tarea',
@@ -33,6 +34,7 @@ export class TareaComponent implements OnInit {
     private tareaService: TareaService,
     private categoriaService: CategoriaService,
     private cdr: ChangeDetectorRef,
+	public authService: AuthService,
   ) {}
 
   ngOnInit(): void {
