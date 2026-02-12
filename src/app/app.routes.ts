@@ -20,11 +20,11 @@ import { Error404Component } from './modules/error404/error404';
 import { GestionarSolicitudes } from './modules/gestionar-solicitudes/gestionar-solicitudes';
 
 export const routes: Routes = [
-    // Rutas públicas
+    // Rutas pÃºblicas
     { path: 'login', component: Auth },
     { path: 'register', component: RegisterComponent },
     { path: 'home', component: Home },
-    { path: '', component: Home }, // Página de inicio por defecto
+    { path: '', component: Home }, // PÃ¡gina de inicio por defecto
 
     // Tutoriales y Perfil
     { path: 'tutorial', component: TutorialComponent },
@@ -32,17 +32,17 @@ export const routes: Routes = [
     { path: 'perfil', component: Perfil },
     { path: 'cambiar-contrasena', component: Contrasena },
 
-    // Mensajería y Roles
+    // MensajerÃ­a y Roles
     { path: 'mensajes', component: Mensajes },
     { path: 'tareas-disponibles', component: TrabajadorComponent },
-    { path: 'administrador', component: AdministradorComponent },
-    { path: 'mis-solicitudes', component: MisSolicitudes },
-	{ path: 'gestionar-solicitudes/:id', component: GestionarSolicitudes },
+    { path: 'administrador', component: AdministradorComponent, canActivate: [roleGuard], data: { role: 'ADMINISTRADOR' } },
+    { path: 'mis-solicitudes', component: MisSolicitudes, canActivate: [roleGuard], data: { role: ['CLIENTE', 'TRABAJADOR'] } },
+	{ path: 'gestionar-solicitudes/:id', component: GestionarSolicitudes, canActivate: [roleGuard], data: { role: 'CLIENTE' } },
 
-    // Gestión de Tareas y Categorías
+    // GestiÃ³n de Tareas y CategorÃ­as
     { path: 'tareas', component: TareaComponent },
-    { path: 'categorias', component: CategoriaComponent },
+    { path: 'categorias', component: CategoriaComponent, canActivate: [roleGuard], data: { role: 'ADMINISTRADOR' } },
 
-    // GESTIÓN DE ERROR 404
+    // GESTIÃ“N DE ERROR 404
     { path: '**', component: Error404Component }
 ];
