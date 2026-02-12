@@ -1,17 +1,17 @@
 /* Efecto de elevación al pasar el ratón */
 .card-hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 16px; /* Bordes más redondeados */
+  border-radius: 16px;
   background-color: #fff;
 }
 
 .card-hover:hover {
-  transform: translateY(-5px); /* Sube la tarjeta 5px */
-  box-shadow: 0 1rem 3rem rgba(0,0,0,.15) !important; /* Sombra más fuerte */
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.15) !important;
   border-color: transparent;
 }
 
-/* Limita el texto a 3 líneas y pone puntos suspensivos */
+/* Limita el texto a 3 líneas */
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -20,7 +20,7 @@
   text-overflow: ellipsis;
 }
 
-/* Color suave para el botón */
+/* Botón */
 .btn-outline-primary {
   border-radius: 50px;
   border-width: 2px;
@@ -29,4 +29,29 @@
 .btn-outline-primary:hover {
   background-color: #0d6efd;
   color: white;
+}
+
+/* Formulario */
+.formulario-card {
+  border-radius: 16px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formulario-card .form-control {
+  border-radius: 10px;
+}
+
+.formulario-card .form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
 }

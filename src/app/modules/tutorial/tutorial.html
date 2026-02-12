@@ -1,10 +1,94 @@
 <div class="container py-5">
-  
+
   <div class="text-center mb-5">
     <h1 class="display-5 fw-bold text-primary">Centro de Aprendizaje</h1>
     <p class="lead text-secondary">Descubre guías y consejos de nuestros expertos.</p>
   </div>
 
+  <!-- Botón crear tutorial (solo trabajadores) -->
+  <div *ngIf="esTrabajador" class="text-end mb-4">
+    <button class="btn btn-primary rounded-pill px-4 fw-semibold" (click)="toggleFormulario()">
+      <i class="bi" [ngClass]="mostrarFormulario ? 'bi-x-lg' : 'bi-plus-lg'"></i>
+      {{ mostrarFormulario ? 'Cancelar' : 'Nuevo Tutorial' }}
+    </button>
+  </div>
+
+  <!-- Formulario de creación -->
+  <div *ngIf="esTrabajador && mostrarFormulario" class="card border-0 shadow-sm mb-5 formulario-card">
+    <div class="card-body p-4">
+      <h4 class="fw-bold mb-4"><i class="bi bi-pencil-square me-2 text-primary"></i>Crear Tutorial</h4>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Título *</label>
+        <input type="text" class="form-control" [(ngModel)]="nuevoTutorial.titulo" placeholder="Título del tutorial">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Resumen</label>
+        <textarea class="form-control" rows="2" [(ngModel)]="nuevoTutorial.resumen" placeholder="Breve descripción del tutorial"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Contenido *</label>
+        <textarea class="form-control" rows="6" [(ngModel)]="nuevoTutorial.texto" placeholder="Escribe el contenido del tutorial..."></textarea>
+      </div>
+
+      <!-- Imágenes -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Imágenes (URLs)</label>
+        <div class="input-group mb-2">
+          <input type="text" class="form-control" [(ngModel)]="nuevaImagen" placeholder="https://ejemplo.com/imagen.jpg" (keydown.enter)="agregarImagen()">
+          <button class="btn btn-outline-secondary" type="button" (click)="agregarImagen()">
+            <i class="bi bi-plus"></i> Añadir
+          </button>
+        </div>
+        <div *ngIf="nuevoTutorial.imagenes.length > 0" class="d-flex flex-wrap gap-2 mt-2">
+          <span *ngFor="let img of nuevoTutorial.imagenes; let i = index" class="badge bg-light text-dark border d-flex align-items-center gap-1 px-2 py-1">
+            <img [src]="img" style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px;">
+            <small class="text-truncate" style="max-width: 150px;">{{ img }}</small>
+            <button class="btn btn-sm p-0 ms-1 text-danger" (click)="quitarImagen(i)"><i class="bi bi-x"></i></button>
+          </span>
+        </div>
+      </div>
+
+      <div class="text-end">
+        <button class="btn btn-primary rounded-pill px-4 fw-semibold" (click)="crearTutorial()" [disabled]="guardando">
+          <span *ngIf="guardando" class="spinner-border spinner-border-sm me-1"></span>
+          {{ guardando ? 'Guardando...' : 'Publicar Tutorial' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mis Tutoriales (solo trabajadores) -->
+  <div *ngIf="esTrabajador && misTutoriales.length > 0" class="mb-5">
+    <h3 class="fw-bold mb-3"><i class="bi bi-journal-bookmark me-2 text-primary"></i>Mis Tutoriales</h3>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let t of misTutoriales">
+        <div class="card h-100 border-0 shadow-sm card-hover overflow-hidden position-relative">
+          <div class="card-img-top-wrapper position-relative">
+            <img *ngIf="t.imagenes && t.imagenes.length > 0" [src]="t.imagenes[0]" class="card-img-top object-fit-cover" style="height: 200px; width: 100%;">
+            <div *ngIf="!t.imagenes || t.imagenes.length === 0" class="bg-light d-flex align-items-center justify-content-center" style="height: 200px; width: 100%;">
+              <i class="bi bi-image" style="font-size: 2rem;"></i>
+            </div>
+            <span class="position-absolute top-0 end-0 m-3 badge bg-success text-white shadow-sm rounded-pill">Mío</span>
+          </div>
+          <div class="card-body px-4 pt-4">
+            <h5 class="card-title fw-bold text-dark">{{ t.titulo }}</h5>
+            <p class="card-text text-muted line-clamp-3">{{ t.resumen }}</p>
+          </div>
+          <div class="card-footer bg-transparent border-0 px-4 pb-4 d-flex gap-2">
+            <button class="btn btn-outline-primary flex-grow-1 fw-semibold rounded-pill">Leer más</button>
+            <button class="btn btn-outline-danger rounded-pill px-3" (click)="eliminarTutorial(t.id)" title="Eliminar">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spinner de carga -->
   <div *ngIf="cargando" class="text-center py-5">
     <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
       <span class="visually-hidden">Cargando...</span>
@@ -13,35 +97,40 @@
   </div>
 
   <ng-container *ngIf="!cargando">
-
     <div *ngIf="errorMensaje" class="alert alert-danger text-center">
       {{ errorMensaje }}
     </div>
 
+    <!-- Todos los tutoriales -->
+    <h3 *ngIf="esTrabajador && tutoriales.length > 0" class="fw-bold mb-3"><i class="bi bi-collection me-2 text-primary"></i>Todos los Tutoriales</h3>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="!errorMensaje && tutoriales.length > 0">
       <div class="col" *ngFor="let t of tutoriales">
         <div class="card h-100 border-0 shadow-sm card-hover overflow-hidden">
-            <div class="card-img-top-wrapper position-relative">
-                <img *ngIf="t.imagenes && t.imagenes.length > 0" [src]="t.imagenes[0]" class="card-img-top object-fit-cover" style="height: 200px; width: 100%;">
-                <div *ngIf="!t.imagenes || t.imagenes.length === 0" class="bg-light d-flex align-items-center justify-content-center" style="height: 200px; width: 100%;"><i class="bi bi-image" style="font-size: 2rem;"></i></div>
-                <span class="position-absolute top-0 end-0 m-3 badge bg-white text-primary shadow-sm rounded-pill">Tutorial</span>
+          <div class="card-img-top-wrapper position-relative">
+            <img *ngIf="t.imagenes && t.imagenes.length > 0" [src]="t.imagenes[0]" class="card-img-top object-fit-cover" style="height: 200px; width: 100%;">
+            <div *ngIf="!t.imagenes || t.imagenes.length === 0" class="bg-light d-flex align-items-center justify-content-center" style="height: 200px; width: 100%;">
+              <i class="bi bi-image" style="font-size: 2rem;"></i>
             </div>
-            <div class="card-body px-4 pt-4">
-                <h5 class="card-title fw-bold text-dark">{{ t.titulo }}</h5>
-                <p class="card-text text-muted line-clamp-3">{{ t.resumen }}</p>
-            </div>
-            <div class="card-footer bg-transparent border-0 px-4 pb-4">
-                <button class="btn btn-outline-primary w-100 fw-semibold rounded-pill stretched-link">Leer más</button>
-            </div>
+            <span class="position-absolute top-0 end-0 m-3 badge bg-white text-primary shadow-sm rounded-pill">Tutorial</span>
+          </div>
+          <div class="card-body px-4 pt-4">
+            <h5 class="card-title fw-bold text-dark">{{ t.titulo }}</h5>
+            <p class="card-text text-muted line-clamp-3">{{ t.resumen }}</p>
+          </div>
+          <div class="card-footer bg-transparent border-0 px-4 pb-4 d-flex gap-2">
+            <button class="btn btn-outline-primary flex-grow-1 fw-semibold rounded-pill">Leer más</button>
+            <button *ngIf="esMio(t)" class="btn btn-outline-danger rounded-pill px-3" (click)="eliminarTutorial(t.id)" title="Eliminar">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
         </div>
-        </div>
+      </div>
     </div>
 
     <div *ngIf="!errorMensaje && tutoriales.length === 0" class="text-center py-5">
       <i class="bi bi-journal-x text-muted" style="font-size: 3rem;"></i>
       <p class="mt-3 text-muted">Aún no hay tutoriales disponibles.</p>
     </div>
-
   </ng-container>
 
 </div>
